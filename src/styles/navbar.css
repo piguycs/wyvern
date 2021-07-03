@@ -1,0 +1,7 @@
+.navbar {
+    background-color: #15213a;
+    /* min-height: 50px; */
+    width: 4rem;
+    grid-area: nav;
+    color: aliceblue;
+}

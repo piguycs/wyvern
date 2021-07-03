@@ -1,0 +1,12 @@
+#root {
+  text-align: center;
+  display: grid;
+  grid-template-areas:
+    "nav  main  list";
+  height: 100vh;
+  background-color: #1D2D50;
+}
+
+.app {
+  grid-area: main;
+}
