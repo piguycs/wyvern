@@ -16,6 +16,10 @@ function gSignIn(firebase:any) {
     firebase.auth().signInWithPopup(googleAuthProvider)
 }
 
+function authState(isSignedIn:string) {
+    console.log(isSignedIn)
+}
+
 function signin() {
     const fcfg = {
         apiKey: "AIzaSyB_PBMA8X-sNvzh6bXqpFxfbeh_msdKMoI",
@@ -34,12 +38,11 @@ function signin() {
 
                 <FirebaseAuthConsumer>
                     {({ isSignedIn }) => {
-                        return (
-                            JSON.stringify({ isSignedIn }, null, 2)
-                        )
+                        authState(JSON.stringify({ isSignedIn }, null, 2))
                     }}
                 </FirebaseAuthConsumer>
             </div>
+
         </FirebaseAuthProvider>
     )
 }
