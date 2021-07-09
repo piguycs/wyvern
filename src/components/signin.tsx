@@ -11,6 +11,11 @@ import {
     IfFirebaseAuthedAnd
 } from "@react-firebase/auth";
 
+function gSignIn(firebase:any) {
+    const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
+    firebase.auth().signInWithPopup(googleAuthProvider)
+}
+
 function signin() {
     const fcfg = {
         apiKey: "AIzaSyB_PBMA8X-sNvzh6bXqpFxfbeh_msdKMoI",
@@ -22,44 +27,18 @@ function signin() {
     return (
         <FirebaseAuthProvider firebase={firebase} {...fcfg}>
             <div>
-                <button
-                    onClick={() => {
-                        const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
-                        firebase.auth().signInWithPopup(googleAuthProvider);
-                    }}
-                >
-                    Sign In with Google
-                </button>
-                <button
-                    onClick={() => {
-                        firebase.auth().signOut();
-                    }}
-                >
-                    Sign Out
-                </button>
+                <section className="signinBtns">
+                    <button onClick={() => {gSignIn(firebase)}}>Sign In with Google</button>
+                    <button onClick={() => {firebase.auth().signOut()}}>Sign Out</button>
+                </section>
+
                 <FirebaseAuthConsumer>
                     {({ isSignedIn }) => {
                         return (
-                            <pre style={{ height: 300, overflow: "auto" }}>
-                                {JSON.stringify({ isSignedIn }, null, 2)}
-                            </pre>
+                            JSON.stringify({ isSignedIn }, null, 2)
                         )
                     }}
                 </FirebaseAuthConsumer>
-                <div>
-                    <IfFirebaseAuthed>
-                        {() => {
-                            return <div>You are authenticated</div>;
-                        }}
-                    </IfFirebaseAuthed>
-                    <IfFirebaseAuthedAnd
-                        filter={({ providerId }) => providerId !== "anonymous"}
-                    >
-                        {({ providerId }) => {
-                            return <div>You are authenticated with {providerId}</div>;
-                        }}
-                    </IfFirebaseAuthedAnd>
-                </div>
             </div>
         </FirebaseAuthProvider>
     )
