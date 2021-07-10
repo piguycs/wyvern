@@ -1,5 +1,17 @@
 .signin-box {
-    background-color: #1D2D50;
-    height: 100vh;
-    width: 100vh;
+    background-color: #00000081;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.signinBtns {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn {
+    margin: 10px;
 }

@@ -4,10 +4,10 @@ import './styles/style.css'
 import './styles/navbar.css'
 
 function navbar() {
-    const [count, setCount] = useState(0)
-
     return (
-        <nav className="navbar">Wyvren</nav>
+        <nav className="navbar">
+            Wyvren
+        </nav>
     )
 }
 

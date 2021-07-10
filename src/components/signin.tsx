@@ -1,34 +1,43 @@
 import React, { useState } from 'react'
+
+// Styles
 import '../styles/style.css'
 import '../styles/signin.css'
 
-import firebase from "firebase/app";
-import "firebase/auth";
+// Firebase
+import firebase from "firebase/app"
+import "firebase/auth"
+
+// Imports firebase config from a ts file
 import { fcfg } from "../firebase/firebase"
+
 import {
     FirebaseAuthProvider,
-    FirebaseAuthConsumer,
-    IfFirebaseAuthed,
-    IfFirebaseAuthedAnd
+    FirebaseAuthConsumer
 } from "@react-firebase/auth";
 
+// Google Sign in
+// Can be modified to handle all logins later
 function gSignIn(firebase:any) {
     const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
     firebase.auth().signInWithPopup(googleAuthProvider)
 }
 
+// Auth State logger
+// Will be used later for auth tokens etc
 function authState(isSignedIn:string) {
     console.log(isSignedIn)
 }
 
-function signin() {
 
+// Main function which is gonna return stuff
+function signin() {
     return (
         <FirebaseAuthProvider firebase={firebase} {...fcfg}>
-            <div>
+            <div className="signin-box">
                 <section className="signinBtns">
-                    <button onClick={() => {gSignIn(firebase)}}>Sign In with Google</button>
-                    <button onClick={() => {firebase.auth().signOut()}}>Sign Out</button>
+                    <button className="GSignIn btn btn-outline-light" onClick={() => {gSignIn(firebase)}}>Sign In with Google</button>
+                    <button className="SignOut btn btn-outline-light" onClick={() => {firebase.auth().signOut()}}>Sign Out</button>
                 </section>
 
                 <FirebaseAuthConsumer>
