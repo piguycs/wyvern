@@ -46,17 +46,28 @@ function createuser() {
 
 // Main function which is gonna return stuff
 function signin() {
+    console.log(authLogs.isSignedIn?.isSignedIn)
+    if (authLogs.isSignedIn?.isSignedIn == true) {
+        return (
+            <FirebaseAuthProvider firebase={firebase} {...fcfg}>
+                <button className="SignOut btn btn-outline-light" onClick={() => { firebase.auth().signOut() }}>Sign Out</button>
+                <button className="SignOut btn btn-outline-light" onClick={() => {
+                    console.log(authLogs.isSignedIn)
+                }}>log
+                </button>
+            </FirebaseAuthProvider>
+        )
+    }
+
     return (
         <FirebaseAuthProvider firebase={firebase} {...fcfg}>
             <div className="signin-box">
                 <section className="signinBtns">
                     <button className="GSignIn btn btn-outline-light" onClick={() => {gSignIn(firebase)}}>Sign In with Google</button>
-                    <button className="SignOut btn btn-outline-light" onClick={() => {firebase.auth().signOut()}}>Sign Out</button>    
-                    <button className="SignOut btn btn-outline-light" onClick={() => { 
-                        console.log(authLogs.utoken)
-                        console.log(authLogs.uname)
-                        console.log(authLogs.uemail)
-                        }}>log
+                    <button className="SignOut btn btn-outline-light" onClick={() => {
+                        console.log(authLogs.isSignedIn.isSignedIn)
+                    }}>log
+                    
                     </button>
                     <button className="SignOut btn btn-outline-light" onClick={() => { createuser() }}>output shit</button>
                 </section>
@@ -75,6 +86,7 @@ function signin() {
 
         </FirebaseAuthProvider>
     )
+    
 }
 
 export default signin
