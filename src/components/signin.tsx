@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 // Styles
 import '../styles/style.css'
 import '../styles/signin.css'
+// import { Button } from 'react-bootstrap'
 
 // Firebase
 import firebase from "firebase/app"
@@ -23,12 +24,11 @@ function gSignIn(firebase:any) {
     firebase.auth().signInWithPopup(googleAuthProvider)
 }
 
-// Auth State logger
-// Will be used later for auth tokens etc
-function authState(isSignedIn:string) {
-    console.log(isSignedIn)
+class auth {
+    constructor(public auth:any) { }
 }
 
+const authState = new auth("isSignedIn")
 
 // Main function which is gonna return stuff
 function signin() {
@@ -37,12 +37,13 @@ function signin() {
             <div className="signin-box">
                 <section className="signinBtns">
                     <button className="GSignIn btn btn-outline-light" onClick={() => {gSignIn(firebase)}}>Sign In with Google</button>
-                    <button className="SignOut btn btn-outline-light" onClick={() => {firebase.auth().signOut()}}>Sign Out</button>
+                    <button className="SignOut btn btn-outline-light" onClick={() => {firebase.auth().signOut()}}>Sign Out</button>    
+                    <button className="SignOut btn btn-outline-light" onClick={() => { console.log(authState.auth) }}>log</button>
                 </section>
 
                 <FirebaseAuthConsumer>
                     {({ isSignedIn }) => {
-                        authState(JSON.stringify({ isSignedIn }, null, 2))
+                        authState.auth = { isSignedIn }
                     }}
                 </FirebaseAuthConsumer>
             </div>
