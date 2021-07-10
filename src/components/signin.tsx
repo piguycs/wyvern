@@ -4,6 +4,7 @@ import '../styles/signin.css'
 
 import firebase from "firebase/app";
 import "firebase/auth";
+import { fcfg } from "../firebase/firebase"
 import {
     FirebaseAuthProvider,
     FirebaseAuthConsumer,
@@ -21,12 +22,6 @@ function authState(isSignedIn:string) {
 }
 
 function signin() {
-    const fcfg = {
-        apiKey: "AIzaSyB_PBMA8X-sNvzh6bXqpFxfbeh_msdKMoI",
-        projectId: "wyvern-chat",
-        databaseURL: "",
-        authDomain: "wyvern-chat.firebaseapp.com"
-    }
 
     return (
         <FirebaseAuthProvider firebase={firebase} {...fcfg}>
