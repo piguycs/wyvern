@@ -1,4 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+const ENDPOINT = "https://Wyvern-API.huski3.repl.co/api/chat"
+
+// socket io
+import { io, Socket } from 'socket.io-client'
 
 // Styles
 import '../styles/style.css'
@@ -44,38 +48,39 @@ function createuser() {
     }
 }
 
+const socket = io("https://Wyvern-API.huski3.repl.co/api/chat")
+
+socket.on('connection', socket => {
+    socket.emit('joined', { 'serverchannel': 4298340998734895 })
+    console.log("Connected")
+})
+socket.on('message', function (data) {
+    console.log(data)
+})
+
 // Main function which is gonna return stuff
 function signin() {
-    console.log(authLogs.isSignedIn?.isSignedIn)
     if (authLogs.isSignedIn?.isSignedIn == true) {
         return (
             <FirebaseAuthProvider firebase={firebase} {...fcfg}>
                 <button className="SignOut btn btn-outline-light" onClick={() => { firebase.auth().signOut() }}>Sign Out</button>
-                <button className="SignOut btn btn-outline-light" onClick={() => {
-                    console.log(authLogs.isSignedIn)
-                }}>log
-                </button>
+                <button className="SignOut btn btn-outline-light" onClick={() => {console.log(authLogs.isSignedIn)}}>log</button>
             </FirebaseAuthProvider>
         )
     }
-
+    
     return (
         <FirebaseAuthProvider firebase={firebase} {...fcfg}>
             <div className="signin-box">
                 <section className="signinBtns">
                     <button className="GSignIn btn btn-outline-light" onClick={() => {gSignIn(firebase)}}>Sign In with Google</button>
-                    <button className="SignOut btn btn-outline-light" onClick={() => {
-                        console.log(authLogs.isSignedIn.isSignedIn)
-                    }}>log
-                    
-                    </button>
-                    <button className="SignOut btn btn-outline-light" onClick={() => { createuser() }}>output shit</button>
+                    <button className="SignOut btn btn-outline-light" onClick={() => { console.log(authLogs.isSignedIn.isSignedIn) }}>log</button>
+                    <button className="SignOut btn btn-outline-light" onClick={() => { createuser() }}>create acc</button>
                 </section>
 
                 <FirebaseAuthConsumer>
                     {({ isSignedIn, user }) => {
                         var userobj = { user }
-                        console.log(userobj)
                         authLogs.isSignedIn = { isSignedIn }
                         authLogs.utoken = userobj.user?.uid
                         authLogs.uname = userobj.user?.displayName
@@ -83,7 +88,6 @@ function signin() {
                     }}
                 </FirebaseAuthConsumer>
             </div>
-
         </FirebaseAuthProvider>
     )
     
