@@ -25,11 +25,24 @@ function gSignIn(firebase:any) {
 }
 
 class auth {
-    constructor(public authstate:any, public authtoken:any) { }
+    isSignedIn: any
+
+    utoken: any
+    uname: any
+    uemail: any
 }
 
+const authLogs = new auth()
 
-const authLogs = new auth("isSignedIn", "token")
+function createuser() {
+    const http = new XMLHttpRequest()
+    http.open("GET", "https://wyvern-api.huski3.repl.co/api/auth/register?token=" + authLogs.utoken + "&username=" + authLogs.uname + "&email=" + authLogs.uemail)
+    http.send()
+    http.onload = () => {
+        var obj = JSON.parse(http.responseText.replace(/'/g, '"'));
+        console.log("recieved object:", obj)
+    }
+}
 
 // Main function which is gonna return stuff
 function signin() {
@@ -40,16 +53,22 @@ function signin() {
                     <button className="GSignIn btn btn-outline-light" onClick={() => {gSignIn(firebase)}}>Sign In with Google</button>
                     <button className="SignOut btn btn-outline-light" onClick={() => {firebase.auth().signOut()}}>Sign Out</button>    
                     <button className="SignOut btn btn-outline-light" onClick={() => { 
-                        console.log(authLogs.authtoken)
+                        console.log(authLogs.utoken)
+                        console.log(authLogs.uname)
+                        console.log(authLogs.uemail)
                         }}>log
                     </button>
-                    <button className="SignOut btn btn-outline-light" onClick={() => {console.log(authLogs.authtoken)}}>output shit</button>
+                    <button className="SignOut btn btn-outline-light" onClick={() => { createuser() }}>output shit</button>
                 </section>
 
                 <FirebaseAuthConsumer>
                     {({ isSignedIn, user }) => {
-                        authLogs.authstate = { isSignedIn }
-                        authLogs.authtoken = { user }
+                        var userobj = { user }
+                        console.log(userobj)
+                        authLogs.isSignedIn = { isSignedIn }
+                        authLogs.utoken = userobj.user?.uid
+                        authLogs.uname = userobj.user?.displayName
+                        authLogs.uemail = userobj.user?.email
                     }}
                 </FirebaseAuthConsumer>
             </div>
