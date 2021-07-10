@@ -15,7 +15,7 @@ import { fcfg } from "../firebase/firebase"
 import {
     FirebaseAuthProvider,
     FirebaseAuthConsumer
-} from "@react-firebase/auth";
+} from "@react-firebase/auth"
 
 // Google Sign in
 // Can be modified to handle all logins later
@@ -25,10 +25,11 @@ function gSignIn(firebase:any) {
 }
 
 class auth {
-    constructor(public auth:any) { }
+    constructor(public authstate:any, public authtoken:any) { }
 }
 
-const authState = new auth("isSignedIn")
+
+const authLogs = new auth("isSignedIn", "token")
 
 // Main function which is gonna return stuff
 function signin() {
@@ -38,12 +39,17 @@ function signin() {
                 <section className="signinBtns">
                     <button className="GSignIn btn btn-outline-light" onClick={() => {gSignIn(firebase)}}>Sign In with Google</button>
                     <button className="SignOut btn btn-outline-light" onClick={() => {firebase.auth().signOut()}}>Sign Out</button>    
-                    <button className="SignOut btn btn-outline-light" onClick={() => { console.log(authState.auth) }}>log</button>
+                    <button className="SignOut btn btn-outline-light" onClick={() => { 
+                        console.log(authLogs.authtoken)
+                        }}>log
+                    </button>
+                    <button className="SignOut btn btn-outline-light" onClick={() => {console.log(authLogs.authtoken)}}>output shit</button>
                 </section>
 
                 <FirebaseAuthConsumer>
-                    {({ isSignedIn }) => {
-                        authState.auth = { isSignedIn }
+                    {({ isSignedIn, user }) => {
+                        authLogs.authstate = { isSignedIn }
+                        authLogs.authtoken = { user }
                     }}
                 </FirebaseAuthConsumer>
             </div>
