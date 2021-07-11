@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-const ENDPOINT = "https://Wyvern-API.huski3.repl.co/api/chat"
 
 // socket io
 import { io, Socket } from 'socket.io-client'
@@ -48,35 +47,26 @@ function createuser() {
     }
 }
 
-const socket = io("https://Wyvern-API.huski3.repl.co/api/chat")
-
-socket.on('connection', socket => {
-    socket.emit('joined', { 'serverchannel': 4298340998734895 })
-    console.log("Connected")
-})
-socket.on('message', function (data) {
-    console.log(data)
-})
 
 // Main function which is gonna return stuff
-function signin() {
-    if (authLogs.isSignedIn?.isSignedIn == true) {
-        return (
-            <FirebaseAuthProvider firebase={firebase} {...fcfg}>
-                <button className="SignOut btn btn-outline-light" onClick={() => { firebase.auth().signOut() }}>Sign Out</button>
-                <button className="SignOut btn btn-outline-light" onClick={() => {console.log(authLogs.isSignedIn)}}>log</button>
-            </FirebaseAuthProvider>
-        )
-    }
-    
+function signin() {    
+    const [userSignedIn, changeAuthState] = useState(false)
     return (
         <FirebaseAuthProvider firebase={firebase} {...fcfg}>
+            {userSignedIn ?
             <div className="signin-box">
                 <section className="signinBtns">
                     <button className="GSignIn btn btn-outline-light" onClick={() => {gSignIn(firebase)}}>Sign In with Google</button>
                     <button className="SignOut btn btn-outline-light" onClick={() => { console.log(authLogs.isSignedIn.isSignedIn) }}>log</button>
                     <button className="SignOut btn btn-outline-light" onClick={() => { createuser() }}>create acc</button>
+                    <button className="SignOut btn btn-outline-light" onClick={
+                        () => {
+                            changeAuthState((userSignedIn) => false)
+                            firebase.auth().signOut()
+                        }}>sign out (but changes state)
+                    </button>
                 </section>
+                
 
                 <FirebaseAuthConsumer>
                     {({ isSignedIn, user }) => {
@@ -87,10 +77,20 @@ function signin() {
                         authLogs.uemail = userobj.user?.email
                     }}
                 </FirebaseAuthConsumer>
-            </div>
+                    
+            </div> :
+                <button className="SignOut btn btn-outline-light" onClick={
+                    () => {
+                        changeAuthState((userSignedIn) => true)
+                        firebase.auth().signOut()
+                    }}>sign out
+                </button>
+            }
+            
         </FirebaseAuthProvider>
     )
     
 }
 
 export default signin
+export { authLogs }

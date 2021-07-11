@@ -14,4 +14,11 @@
 
 .btn {
     margin: 10px;
+    min-width: 12rem;
+    min-height: 3rem;
+}
+
+.SignOut {
+    max-height: 3rem;
+    max-width: 8rem;
 }

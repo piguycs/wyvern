@@ -4,13 +4,22 @@ import './index.css'
 import App from './App'
 import Nav from './navbar'
 import Signin from './components/signin'
+import { authLogs } from './components/signin'
+import Socketio from './components/socketio'
+
+console.log(authLogs.isSignedIn?.isSignedIn);
+var signin
+if (authLogs.isSignedIn?.isSignedIn != true) {
+  signin = <Signin />
+}
 
 import './styles/bootstrap-min.css'
 
 ReactDOM.render(
   <React.StrictMode>
     <Nav />
-    <Signin />
+    {signin}
+    <Socketio />
   </React.StrictMode>,
   document.getElementById('root')
-)
+  )
