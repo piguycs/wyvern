@@ -1,23 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import io from "socket.io-client"
 
 // THIS CONNECTS TO THE FUCKING API
 const socket = io("https://Wyvern-API.huski3.repl.co/api/chat")
 
 // THIS IS ME TALKING TO MYSELF COZ FML
-var hello = "0"
+
 
 // THIS IS THE SHIT WHICH DOES NOT FUCKING WORK
 socket.on('connect', () => {
-    socket.emit('joined', { 'serverchannel': 4298340998734895 })
+    socket.emit('joined', { 'serverchannel': 120 })
     console.log("Connected")
-})
-socket.on('message', (data) => {
-    hello = "1"
-    console.log(data)
 })
 
 function socketio() {
+    const [hello, setCount] = useState("0")
+    socket.on('message', (data) => {
+        setCount(prevCount => data.content)
+        console.log(data.content)
+    })
     return (
         <div>
             <h1>{hello}</h1>
