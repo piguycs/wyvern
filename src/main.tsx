@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import Nav from './navbar'
-import Signin from './components/signin'
+import Signin from './components/signinnew'
 import { authLogs } from './components/signin'
 import Socketio from './components/socketio'
 
