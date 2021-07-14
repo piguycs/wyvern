@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Component, useState } from 'react'
 import logo from './logo.svg'
 import './styles/style.css'
 import './styles/navbar.css'
@@ -14,18 +14,34 @@ import {
     FirebaseAuthProvider
 } from "@react-firebase/auth"
 
-function navbar() {
-    return (
-        <nav className="navbar">
-            <p className="branding">Wyvren</p>
-            <div className="serverList">
-                hello?
-            </div>
-            <FirebaseAuthProvider firebase={firebase} {...fcfg}>
+class navbar extends Component {
+    state = { serverList: [] }
+    getServerList = () => {
+        fetch('https://wyvern-api.huski3.repl.co/api/real_user?token=')
+            .then((response) => {
+                response.json().then(
+                    (data) => {
+                        this.setState({ serverList: data.servers })
+                    }
+                )
+            })
+    }
+    render() {
+        return (
+            <nav className="navbar">
+                <p className="branding">Wyvren</p>
+                <div className="serverList">
+                    <button onClick={() => {
+                        this.getServerList()
+                        }}>load </button>
+                    {this.state.serverList.map((server, index) => <a key={index} onClick={() => console.log(server)}><br />{server}</a>)}
+                </div>
+                <FirebaseAuthProvider firebase={firebase} {...fcfg}>
                     <button className="signoutnav" onClick={() => firebase.auth().signOut()}></button>
-            </FirebaseAuthProvider>
-        </nav>
-    )
+                </FirebaseAuthProvider>
+            </nav>
+        )
+    }
 }
 
 export default navbar

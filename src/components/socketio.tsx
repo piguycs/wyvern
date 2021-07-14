@@ -16,7 +16,7 @@ socket.on('connect', () => {
 function socketio() {
     const [hello, setCount] = useState("0")
     socket.on('message', (data) => {
-        setCount(prevCount => data.content)
+        setCount(data.content)
         console.log(data.content)
     })
     return (
