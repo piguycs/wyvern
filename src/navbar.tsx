@@ -11,25 +11,18 @@ import "firebase/auth"
 import { fcfg } from "./firebase/firebase"
 
 import {
-    FirebaseAuthProvider,
-    FirebaseAuthConsumer
+    FirebaseAuthProvider
 } from "@react-firebase/auth"
 
 function navbar() {
     return (
         <nav className="navbar">
-            Wyvren
+            <p className="branding">Wyvren</p>
+            <div className="serverList">
+                hello?
+            </div>
             <FirebaseAuthProvider firebase={firebase} {...fcfg}>
-                <div>
-                    <button className="signoutnav" onClick={() => firebase.auth().signOut()}>Signout</button>
-                </div>
-                <FirebaseAuthConsumer>
-                    {({ isSignedIn, user }) => {
-                        if (!{ isSignedIn }.isSignedIn) {
-                            // signIn.userSignedOut()
-                        }
-                    }}
-                </FirebaseAuthConsumer>
+                    <button className="signoutnav" onClick={() => firebase.auth().signOut()}></button>
             </FirebaseAuthProvider>
         </nav>
     )

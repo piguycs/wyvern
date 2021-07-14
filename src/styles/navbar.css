@@ -1,20 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Londrina+Solid&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
+
 .navbar {
     background-color: #15213a;
     /* min-height: 50px; */
-    width: 4rem;
+    width: auto;
     grid-area: nav;
     color: aliceblue;
+    display: grid;
+    grid-template-areas:
+    "branding"
+    "servers"
+    "profile";
+    grid-template-rows: 0fr 1fr 0fr;
+    justify-items: center;
+    min-width: 80px;
+}
+
+.branding {
+    grid-area: branding;
+    font-family: 'Anonymous Pro', monospace;
+    background-color: hsl(221, 52%, 8%);
+    padding: 8px;
+    border-radius: 3px;
+    margin-top: 8px;
+}
+
+.serverList {
+    grid-area: servers;
 }
 
 .signoutnav {
-    margin-top: auto;
-    width: 3.2rem;
-    height: 3.2rem;
+    width: 3rem;
+    height: 3rem;
     border-radius: 8px;
-    background-color: #00000000;
+    justify-items: center;
+
+    margin: 10px;
+
+    background-color: hsl(0, 39%, 53%);
     border-color: #00000000;
     color: aliceblue;
+    
     box-shadow: 1px 1px 8px 1px rgb(0 0 0);
+    grid-area: profile;
 }
 
 .signoutnav:hover {

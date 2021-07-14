@@ -3,6 +3,7 @@
   display: grid;
   grid-template-areas:
     "nav  main  list";
+  grid-template-columns: 1fr 18fr 4fr;
   height: 100vh;
   background-color: #1D2D50;
 }
