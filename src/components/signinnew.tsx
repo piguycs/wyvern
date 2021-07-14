@@ -23,24 +23,33 @@ class signIn extends Component {
     userSignedOut = () => {
         this.setState({ isSignedIn: false })
     }
+    setUid = (uid:string) => {
+        console.log("uid", uid)
+        if (this.state.isSignedIn) {
+            this.setState({ isSignedIn:true, token:uid })
+        }
+    }
     render() {
         if(!this.state.isSignedIn) {
             return (
                 <FirebaseAuthProvider firebase={firebase} {...fcfg}>
                     <div className="signin-box">
-                        <h1>Sign In b****</h1>
+                        <h1 className="SignInTxt">Sign In</h1>
                         <button className="btn btn-outline-light" onClick={
                         () => {
                             this.userSignedIn
                             const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
                             firebase.auth().signInWithPopup(googleAuthProvider)
-                        }
+                            }
                         }>Sign In with Google</button>
                         <button className="SignOut btn btn-outline-light" onClick={() => { console.log(this.state.isSignedIn) }}>log</button>
                     </div>
                     <FirebaseAuthConsumer>
                         {({ isSignedIn, user }) => {
-                            var userobj = { user }
+                            var userobj = { user }.user
+                            if (userobj?.uid != undefined) {
+                                this.setUid(userobj.uid)
+                            }
                             if ({ isSignedIn }.isSignedIn) {
                                 this.userSignedIn()
                             }
@@ -51,11 +60,8 @@ class signIn extends Component {
         }
         return (
             <FirebaseAuthProvider firebase={firebase} {...fcfg}>
-                <div>
-                    <button className="btn btn-outline-light" onClick={() => firebase.auth().signOut()}>Signout</button>
-                </div>
                 <FirebaseAuthConsumer>
-                    {({ isSignedIn, user }) => {
+                    {({ isSignedIn }) => {
                         if (!{ isSignedIn }.isSignedIn) {
                             this.userSignedOut()
                         }
