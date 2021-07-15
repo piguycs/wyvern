@@ -34,7 +34,7 @@ class navbar extends Component {
                     <button onClick={() => {
                         this.getServerList()
                         }}>load </button>
-                    {this.state.serverList.map((server, index) => <a key={index} onClick={() => console.log(server)}><br />{server}</a>)}
+                    {this.state.serverList.map((server, index) => <div className="serverName" key={index} onClick={() => console.log(server)}><br />{server}</div>)}
                 </div>
                 <FirebaseAuthProvider firebase={firebase} {...fcfg}>
                     <button className="signoutnav" onClick={() => firebase.auth().signOut()}></button>
