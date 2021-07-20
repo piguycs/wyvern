@@ -1,25 +1,35 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './App'
-import Nav from './navbar'
-import Signin from './components/signinnew'
-import { authLogs } from './components/signin'
+import Nav from './components/navbar'
+import Signin from './components/signin'
 import Socketio from './components/socketio'
 
-console.log(authLogs.isSignedIn?.isSignedIn);
-var signin
-if (authLogs.isSignedIn?.isSignedIn != true) {
-  signin = <Signin />
-}
+import { BrowserRouter as Router,  Route } from "react-router-dom"
+
+// scripts
+import getServerList from './scripts/getservers'
+
+console.log("sus")
+console.log(getServerList("B3hq7YvYNVOHsH9sAQsFlmAC4a93"))
 
 import './styles/bootstrap-min.css'
+let slist = ["12","13"]
 
 ReactDOM.render(
   <React.StrictMode>
-    <Nav />
-    {signin}
-    <Socketio />
+    <Router>
+      <Route path="/home">
+        HELLO THIS IS MAIN PAGE LOLOL
+      </Route>
+      <Route path="/app">
+        <div className="mainapp">
+          <Nav serverList={slist} />
+          <Signin />
+          <Socketio server="hello" />
+        </div>
+      </Route>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
-  )
+)

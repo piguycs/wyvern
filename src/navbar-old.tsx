@@ -1,5 +1,4 @@
 import React, { Component, useState } from 'react'
-import logo from './logo.svg'
 import './styles/style.css'
 import './styles/navbar.css'
 
@@ -14,10 +13,13 @@ import {
     FirebaseAuthProvider
 } from "@react-firebase/auth"
 
+const authHeader = new Headers()
+authHeader.append('X-Api-Key', localStorage.getItem("uid")!)
+
 class navbar extends Component {
     state = { serverList: [] }
     getServerList = () => {
-        fetch('https://wyvern-api.huski3.repl.co/api/real_user?token=')
+        fetch('https://wyvern-api.huski3.repl.co/api/real_user', { headers: authHeader})
             .then((response) => {
                 response.json().then(
                     (data) => {
@@ -34,7 +36,10 @@ class navbar extends Component {
                     <button onClick={() => {
                         this.getServerList()
                         }}>load </button>
-                    {this.state.serverList.map((server, index) => <div className="serverName" key={index} onClick={() => console.log(server)}><br />{server}</div>)}
+                    {this.state.serverList.map((server, index) => <div className="serverName" key={index} onClick={() => 
+                        localStorage.setItem('servernumber', server)
+                        }>{server}</div>)
+                    }
                 </div>
                 <FirebaseAuthProvider firebase={firebase} {...fcfg}>
                     <button className="signoutnav" onClick={() => firebase.auth().signOut()}></button>

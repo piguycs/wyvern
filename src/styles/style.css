@@ -1,4 +1,9 @@
-#root {
+:root {
+  background-color: #1D2D50;
+  color: aliceblue;
+}
+
+.mainapp {
   text-align: center;
   display: grid;
   grid-template-areas:
