@@ -21,7 +21,8 @@ class navbar extends Component {
     getServerList = () => {
         fetch('https://wyvern-api.huski3.repl.co/api/real_user', { headers: authHeader})
             .then((response) => {
-                response.json().then(
+                response.json()
+            .then(
                     (data) => {
                         this.setState({ serverList: data.servers })
                     }

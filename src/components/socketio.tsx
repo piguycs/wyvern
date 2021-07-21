@@ -19,7 +19,6 @@ function socketio(props:any) {
     
     useEffect(() => {
         setDisplay(lastmsg)
-        console.log(display)
         }, [lastmsg]
     )
 

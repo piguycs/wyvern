@@ -10,8 +10,7 @@ import { BrowserRouter as Router,  Route } from "react-router-dom"
 // scripts
 import getServerList from './scripts/getservers'
 
-console.log("sus")
-console.log(getServerList("B3hq7YvYNVOHsH9sAQsFlmAC4a93"))
+console.log(getServerList("lol"))
 
 import './styles/bootstrap-min.css'
 let slist = ["12","13"]
@@ -20,7 +19,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Route path="/home">
-        HELLO THIS IS MAIN PAGE LOLOL
+        <a href="/app">app</a>
       </Route>
       <Route path="/app">
         <div className="mainapp">
