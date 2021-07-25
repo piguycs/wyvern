@@ -2,9 +2,8 @@ import React, { Component, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import Nav from './components/navbar'
 import Socketio from './components/socketio'
-
-import TestApp from './components/app'
 import SignIn from './components/signin'
+import TrySignIn from './components/trySignIn'
 
 import './index.css'
 import './styles/bootstrap-min.css'
@@ -27,40 +26,18 @@ import { fcfg } from './firebase/firebase'
 let slist = await getServerList("")
 console.log("LOG: Fetched server list: " + slist)
 
-var usrSignedIn:boolean = false
-
-class MainChat extends Component {
-  state = { isSignedIn: true }
-
-  render() {
-    return this.state.isSignedIn ?(
-      <div className="mainapp">
-        <Nav serverList={slist} />
-        <Socketio server="hello" />
-      </div>
-    ) : null
-  }
-
+function MainChat() {
+  return (
+    <div className="mainapp">
+      <Nav serverList={slist} />
+      <Socketio />
+    </div>
+  )
 }
 
 
 ReactDOM.render(
   <React.StrictMode>
-      <FirebaseAuthProvider firebase={firebase} {...fcfg}>
-        <FirebaseAuthConsumer>
-          {({ isSignedIn }) => {
-            console.log(isSignedIn)
-            if (isSignedIn === true) {
-              usrSignedIn = true
-              console.log("usrSignedIn updated to TRUE")
-            } else {
-              usrSignedIn = false
-              console.log("usrSignedIn updated to FALSE")
-            }
-          }}
-        </FirebaseAuthConsumer>
-      </FirebaseAuthProvider>
-
     <Router>
       <Route exact path="/">
         <Redirect to="/home" />
@@ -80,11 +57,11 @@ ReactDOM.render(
         <FirebaseAuthProvider firebase={firebase} {...fcfg}>
           <FirebaseAuthConsumer>
             {({ isSignedIn }) => {
-              console.log(isSignedIn)
+              console.log("sign in state is", isSignedIn)
               if (isSignedIn === true) {
                 return <MainChat />
               } else {
-                return <a href="/signin">FML</a>
+                return <TrySignIn />
               }
             }}
           </FirebaseAuthConsumer>

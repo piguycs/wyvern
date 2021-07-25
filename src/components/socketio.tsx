@@ -1,32 +1,65 @@
 import React, { useEffect, useState } from 'react'
 import io from "socket.io-client"
 
-// THIS CONNECTS TO THE FUCKING API
-const socket = io("https://Wyvern-API.huski3.repl.co/api/chat")
+import '../styles/chat.css'
 
-// Runs when connects to server
-socket.on('connect', () => {
-    console.log("Connected")
-})
+interface data {
+    content:string,
+    id:number,
+    serverchannel:number,
+    type:string,
+    username:Array<string>,
+    flags?:Array<number>
+}
 
-function socketio(props:any) {
-    const [lastmsg, latestMsg] = useState("")
-    const [display, setDisplay] = useState("")
-    
-    socket.on('message', (data) => {
-        latestMsg(data.content)
-    })
-    
+async function getHistory() {
+    // Token yet to be implimented api-side
+    var api_url = "https://wyvern-api.huski3.repl.co/api/"+120+"/history?token=token"
+
+    const response = await fetch(api_url)
+    const data = await response.json()
+
+    return data.map((msg:any) => msg.content)
+}
+
+const chatHistory: Array<string> = await getHistory()
+const displayHistory: JSX.Element[] = chatHistory.map((msg, index) => <p id={"h_" + index} key={index}>{msg}</p>)
+let historyLength: number = chatHistory.length
+
+function socketio() {
+    const [lastmsg, setlastmsg] = useState<Array<string>>([])
+    const [socket] = useState(io("https://Wyvern-API.huski3.repl.co/api/chat"))
+    const [location, setlocation] = useState<number>(120)
+    const [newMessages, setNewMessages] = useState<JSX.Element[]>()
+
+    let tempmsg:Array<string>
+
+    // Runs when components are rendered to dom
     useEffect(() => {
-        setDisplay(lastmsg)
-        }, [lastmsg]
-    )
+        document.getElementById(("h_" + (historyLength-1)).toString())!.scrollIntoView()
+    }, [])
+
+    useEffect(() => {
+        socket.on('connect', () => {
+            socket.emit('joined', { 'serverchannel': location })
+            console.log("Connected")
+        })
+
+        socket.on('message', (data:data) => {
+            tempmsg = lastmsg
+            tempmsg.push(data.content)
+            setlastmsg(tempmsg)
+            console.log("Message recieved:", data.content)
+            setNewMessages(lastmsg.map((msg, index) => <p id={"m_" + index.toString()} key={index}>{msg}</p>))
+            document.getElementById(("m_"+(lastmsg.length-1)).toString())!.scrollIntoView()
+        })
+    }, [socket, location])
 
     return (
         <div>
             <div className="chathistory">
-                <p>{display}</p>
-                <p>{props.server}</p>
+                {displayHistory}
+                {newMessages}
             </div>
         </div>
     )

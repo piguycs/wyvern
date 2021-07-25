@@ -1,0 +1,9 @@
+.chathistory {
+    background-color: #15213a;
+    margin: 15px;
+    height: 90vh;
+    overflow: auto;
+    border-radius: 5px;
+    text-align: left;
+    padding-left: 25px;
+}
