@@ -7,3 +7,13 @@
     text-align: left;
     padding-left: 25px;
 }
+
+.messages {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    padding: 4px;
+}
+
+.messages:hover {
+    background-color: #0d1424;
+}

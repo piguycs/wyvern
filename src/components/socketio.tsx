@@ -12,18 +12,18 @@ interface data {
     flags?:Array<number>
 }
 
-async function getHistory() {
+async function getHistory(): Promise<Array<string>> {
     // Token yet to be implimented api-side
     var api_url = "https://wyvern-api.huski3.repl.co/api/"+120+"/history?token=token"
 
     const response = await fetch(api_url)
     const data = await response.json()
 
-    return data.map((msg:any) => msg.content)
+    return data.map((msg: any) => msg.content)
 }
 
-const chatHistory: Array<string> = await getHistory()
-const displayHistory: JSX.Element[] = chatHistory.map((msg, index) => <p id={"h_" + index} key={index}>{msg}</p>)
+const chatHistory = await getHistory()
+const displayHistory: JSX.Element[] = chatHistory.map((msg: string, index: number) => <p id={"h_" + index} className={"messages"} key={index}>{msg}</p>)
 let historyLength: number = chatHistory.length
 
 function socketio() {
@@ -50,7 +50,7 @@ function socketio() {
             tempmsg.push(data.content)
             setlastmsg(tempmsg)
             console.log("Message recieved:", data.content)
-            setNewMessages(lastmsg.map((msg, index) => <p id={"m_" + index.toString()} key={index}>{msg}</p>))
+            setNewMessages(lastmsg.map((msg, index) => <p id={"m_" + index.toString()} className="messages" key={index}>{msg}</p>))
             document.getElementById(("m_"+(lastmsg.length-1)).toString())!.scrollIntoView()
         })
     }, [socket, location])
