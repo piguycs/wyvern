@@ -23,10 +23,10 @@ import firebase from "firebase/app"
 import "firebase/auth"
 import { fcfg } from './firebase/firebase'
 
-let slist = await getServerList("")
-console.log("LOG: Fetched server list: " + slist)
+var slist = await getServerList(localStorage.getItem('uid')!)
 
-function MainChat() {
+interface slist {slist:Array<string>}
+function MainChat({ slist }: slist) {
   return (
     <div className="mainapp">
       <Nav serverList={slist} />
@@ -59,7 +59,7 @@ ReactDOM.render(
             {({ isSignedIn }) => {
               console.log("sign in state is", isSignedIn)
               if (isSignedIn === true) {
-                return <MainChat />
+                return <MainChat slist={slist} />
               } else {
                 return <TrySignIn />
               }

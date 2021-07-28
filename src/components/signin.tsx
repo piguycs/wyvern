@@ -19,12 +19,15 @@ function signin() {
             <FirebaseAuthProvider firebase={firebase} {...fcfg}>
                 <FirebaseAuthConsumer>
                     {({ isSignedIn, user }) => {
+                        var userobj = { user }.user?.uid
+                        localStorage.setItem('uid', userobj)
+
                         if (isSignedIn === true) {
                             return (
                                 <div className="signin-box">
                                     <p>You are signed in</p>
                                     <Link to="/app" className="btn btn-outline-light">APP</Link>
-                                    <button className="btn btn-outline-light" onClick={() => {firebase.app().auth().signOut()}}>
+                                    <button className="btn btn-outline-light" onClick={() => { firebase.app().auth().signOut(); localStorage.removeItem('uid') }}>
                                         Sign out
                                     </button>
 

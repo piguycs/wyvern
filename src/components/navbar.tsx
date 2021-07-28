@@ -11,9 +11,9 @@ function navbar(props:any) {
         <nav className="navbar">
             <p className="branding">Wyvren</p>
             <div className="serverList">
-                {serverList.map((serverNumber, index) => <div className="serverName" key={index}>{serverNumber}</div>)}
+                {serverList.map((serverNumber:any, index:any) => <div className="serverName" key={index}>{serverNumber}</div>)}
             </div>
-            <button className="signoutnav" onClick={() => { firebase.app().auth().signOut() }}></button>
+            <button className="signoutnav" onClick={() => { firebase.app().auth().signOut(); localStorage.removeItem('uid') }}></button>
         </nav>
     )
 }
