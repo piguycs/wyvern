@@ -1,9 +1,9 @@
 import React from "react"
+import { Link } from "react-router-dom"
 
 // Firebase
 import firebase from "firebase/app"
 import "firebase/auth"
-import { Link } from "react-router-dom"
 
 // Imports firebase config from a ts file
 import { fcfg } from "../firebase/firebase"

@@ -1,3 +1,22 @@
+:-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
 .chathistory {
     background-color: #15213a;
     margin: 15px;
@@ -16,4 +35,44 @@
 
 .messages:hover {
     background-color: #0d1424;
+}
+
+.contextMenu {
+    background-color: #0d1424;
+    height: 230px;
+    width: 180px;
+    border-radius: 8px;
+    box-shadow: 7px 5px 10px rgba(0, 0, 0, 0.644);
+    display: flex;
+    flex-direction: column;
+}
+
+.cmItem {
+    height: 100%;
+    background-color: #0d1424;
+    margin: 4px;
+    border-radius: 4px;
+}
+.cmItem:hover {
+    background-color: #070b14;
+}
+
+.inputmsg {
+    background-color: #15213a;
+    caret-color: #f0f8ff;
+    color: #f0f8ff;
+    height: 4vh;
+    width: 97.8%;
+    border: rgba(0, 0, 0, 0);
+}
+
+.inputmsg:focus-visible {
+    outline: none;
+}
+
+.messageBox {
+    background-color: #15213a;
+    margin-left: 15px;
+    height: 5vh;
+    width: 100%;
 }
