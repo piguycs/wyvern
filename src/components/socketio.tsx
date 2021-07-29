@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import io from "socket.io-client"
 
-// Firebase imports
-import firebase from "firebase/app"
-import "firebase/auth"
-import { fcfg } from "../firebase/firebase"
-import {
-    FirebaseAuthProvider,
-    FirebaseAuthConsumer
-} from "@react-firebase/auth"
-
-
 import '../styles/chat.css'
 
 interface data {
@@ -104,6 +94,9 @@ function socketio() {
         })
     }, [socket, location])
 
+    useEffect(() => {
+        setToken(localStorage.getItem('uid')!)
+    }, [localStorage.getItem('uid')])
 
     // Part to send messages
     const [message, setMessage] = useState<string>("")
@@ -122,18 +115,6 @@ function socketio() {
 
     return (
         <div>
-            {/* FIREBASE AUTH TOKEN STUFF */}
-            <FirebaseAuthProvider firebase={firebase} {...fcfg}>
-                <FirebaseAuthConsumer>
-                    {({ user }) => {
-                        var userobj = { user }.user
-                        if (userobj?.uid != undefined) {
-                            setToken(userobj?.uid)
-                        }
-                    }}
-                </FirebaseAuthConsumer>
-            </FirebaseAuthProvider>
-
             <div id="chathistory" className="chathistory">
                 {displayHistory}
                 {newMessages}
