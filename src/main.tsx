@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { createContext } from 'react'
 import ReactDOM from 'react-dom'
 import Nav from './components/navbar'
 import Socketio from './components/socketio'
@@ -27,10 +27,12 @@ var slist = await getServerList(localStorage.getItem('uid')!)
 
 interface slist {slist:Array<string>}
 function MainChat({ slist }: slist) {
+  const serverNumber = createContext(slist)
   return (
     <div className="mainapp">
       <Nav serverList={slist} />
       <Socketio />
+      <h1 style={{ gridArea: 'list' }}>SHIT GOES HERE</h1>
     </div>
   )
 }

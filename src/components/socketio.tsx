@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import io from "socket.io-client"
 
 import '../styles/chat.css'
@@ -12,18 +12,18 @@ interface data {
     flags?:Array<number>
 }
 
-async function getHistory(): Promise<Array<string>> {
+async function getHistory(): Promise<Array<any>> {
     // Token yet to be implimented api-side
     var api_url = "https://wyvern-api.huski3.repl.co/api/"+120+"/history?token=token"
 
     const response = await fetch(api_url)
     const data = await response.json()
 
-    return data.map((msg: any) => msg.content)
+    return data.map((msg: any) => msg)
 }
 
 const chatHistory = await getHistory()
-const displayHistory: JSX.Element[] = chatHistory.map((msg: string, index: number) => <p id={"h_" + index} className={"messages"} key={index}>{msg}</p>)
+const displayHistory: JSX.Element[] = chatHistory.map((msg: any, index: number) => <p id={"h_" + index} className={"messages"} key={index}><b>{msg.author_name[0]}: </b>{msg.content}</p>)
 let historyLength: number = chatHistory.length
 
 interface coords {
@@ -44,7 +44,7 @@ function ContextMenu({ x, y }: coords) {
 }
 
 function socketio() {
-    const [lastmsg, setlastmsg] = useState<Array<string>>([])
+    const [lastmsg, setlastmsg] = useState<Array<any>>([])
     const [socket] = useState(io("https://Wyvern-API.huski3.repl.co/api/chat"))
     const [location, setlocation] = useState<number>(120)
     const [newMessages, setNewMessages] = useState<JSX.Element[]>()
@@ -52,19 +52,35 @@ function socketio() {
     const [token, setToken] = useState<string | null>(null)
     const [channel, setChannel] = useState(120)
 
+    const [typing, setTyping] = useState<string | false>(false)
 
-    let tempmsg:Array<string>
+    let tempmsg:Array<any>
+
+    // Focus on input field when user attempts to type
+    window.onkeydown = () => document.getElementById("msgInpt")!.focus()
+
+    
 
     // Runs when components are rendered to dom
-    useEffect(() => {       
+    useEffect(() => {
         socket.on('connect', () => {
             socket.emit('joined', { 'serverchannel': location })
             console.log("Connected")
         })
 
         document.getElementById(("h_" + (historyLength-1)).toString())!.scrollIntoView()
-
     }, [])
+
+    useEffect(() => {
+        socket.emit('joined', { 'serverchannel': location })
+        console.log("Connected", location)
+    }, [location])
+
+    // This is to change servers
+    useEffect(() => {
+        let newloc = parseInt(localStorage.getItem('server')!, 10) * 10
+        setlocation(newloc)
+    }, [localStorage.getItem('server')])
 
     // context menu stuff
     const [showContextMenu, setCMState] = useState(false)
@@ -86,13 +102,35 @@ function socketio() {
     useEffect(() => {
         socket.on('message', (data:data) => {
             tempmsg = lastmsg
-            tempmsg.push(data.content)
+            tempmsg.push(data)
             setlastmsg(tempmsg)
-            console.log("Message recieved:", data.content)
-            setNewMessages(lastmsg.map((msg, index) => <p id={"m_" + index.toString()} className="messages" key={index}>{msg}</p>))
+            console.log("Message recieved:", data)
+            setNewMessages(lastmsg.map((msg, index) => <p id={"m_" + index.toString()} className="messages" key={index}><b>{msg.username[0]}: </b>{msg.content}</p>))
             document.getElementById(("m_"+(lastmsg.length-1)).toString())!.scrollIntoView()
         })
-    }, [socket, location])
+
+        document.getElementById('msgInpt')?.addEventListener("input", function () {
+            socket.emit('typing', {
+                'token': token, // Set this per user
+                'serverchannel': location, // server and channel id where user is typing
+            })
+        })
+
+        // This is going to set the name of the user who is writing stuff
+        socket.on('typed', function (data : {username:string}) {
+            console.log(data.username)
+            setTyping(data.username)
+        })
+
+    }, [socket])
+
+    // Typing indicator turn off thingy
+    useEffect(() => {
+        setTimeout(() => {
+            setTyping(false)
+        }, 2500)
+
+    }, [typing])
 
     useEffect(() => {
         setToken(localStorage.getItem('uid')!)
@@ -114,17 +152,15 @@ function socketio() {
     }
 
     return (
-        <div>
+        <div className="app">
             <div id="chathistory" className="chathistory">
                 {displayHistory}
                 {newMessages}
             </div>
-            <div className="messageBox">
-                <form onSubmit={sendMessage}>
-                    <input className="inputmsg" type="text" value={message} onChange={event => setMessage(event.target.value)} />
-                    {/* <input type="submit" value="send" /> */}
-                </form>
-            </div>
+            {typing != false ? <div className="typingIndicator">{typing} is typing</div> : null}
+            <form onSubmit={sendMessage} autoComplete="off">
+                <input id="msgInpt" className="inputmsg" autoFocus={true} type="text" value={message} onChange={event => setMessage(event.target.value)} />
+            </form>
             {showContextMenu ? <ContextMenu x={posX} y={posY} /> : null}
         </div>
     )
