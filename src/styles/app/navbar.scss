@@ -1,0 +1,18 @@
+.nav {
+    display: grid;
+    grid-template-areas: 
+    "brand"
+    "nav_area";
+    grid-template-rows: 32px;
+}
+
+.branding {
+    margin-left: 3px;
+    margin-top: 5px;
+}
+
+.nav-div {
+    background-color: hsl(0, 0%, 0%);
+    border-top-right-radius: 8px;
+    color: hsl(208, 100%, 97%);
+}

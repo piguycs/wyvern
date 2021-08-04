@@ -1,0 +1,56 @@
+#main_area {
+    display: grid;
+    grid-template-areas:
+        "loc"
+        "chat_area";
+    grid-template-rows: 32px;
+    margin-right: 8px;
+}
+
+.chat-loc {
+    grid-area: loc;
+    font-family: Anonymous Pro;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 28px;
+    color: hsl(0, 0%, 44%);
+
+    &:hover {
+        color: hsl(0, 0%, 58%);
+    }
+}
+
+.chat-div {
+    grid-area: chat_area;
+    height: 100%;
+    background-color: hsl(0, 0%, 0%);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: grid;
+    align-content: space-between;
+
+    .msg-form {
+        padding: 9px;
+        width: auto;
+        .inputmsg {
+            width: -webkit-fill-available;
+            background-color: hsl(0, 0%, 15%);
+            caret-color: hsl(208, 100%, 97%);
+            color: hsl(0, 0%, 80%);
+            border: hsla(0, 0%, 0%, 0);
+            height: 3.6vh;
+            font-size: 1.8vh;
+            padding-left: 9px;
+            padding-right: 9px;
+            border-radius: 4px;
+            &:focus-visible {
+                background-color: hsl(0, 0%, 22%);
+                outline: none;
+            }
+            &::selection {
+                background: hsl(25, 53%, 36%);
+            }
+        }
+    }
+}
