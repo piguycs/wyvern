@@ -1,14 +1,14 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter as Router, Link, Redirect, Route } from "react-router-dom"
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 
-import App from './components/app/app'
-import Login from './components/login'
+import App from "./components/app/app";
+import Login from "./components/login";
 
-import './styles/main.scss'
+import "./styles/main.scss";
 
-ReactDOM.render(
-  <React.StrictMode>
+function Main() {
+  return (
     <Router>
       <Route exact path="/">
         <Redirect to="home" />
@@ -24,8 +24,13 @@ ReactDOM.render(
       </Route>
 
       <Route path="/signin" component={Login} />
-      
     </Router>
+  );
+}
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Main />
   </React.StrictMode>,
-  document.getElementById('root')
-)
+  document.getElementById("root")
+);

@@ -9,6 +9,7 @@ function chat() {
   const [locationName, setLocationName] = useState<string>()
   const [message, setMessage] = useState<string>("")
 
+  // DEV logs for firebase cfg
   useEffect(() => {
     console.log(fcfg)
   }, [/*When page renders*/])
