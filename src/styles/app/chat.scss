@@ -1,56 +1,84 @@
 #main_area {
-    display: grid;
-    grid-template-areas:
-        "loc"
-        "chat_area";
-    grid-template-rows: 32px;
-    margin-right: 8px;
+  display: grid;
+  grid-template-areas:
+    "loc"
+    "chat_area";
+  grid-template-rows: 32px;
+  margin-right: 8px;
 }
 
 .chat-loc {
-    grid-area: loc;
-    font-family: Anonymous Pro;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 28px;
-    line-height: 28px;
-    color: hsl(0, 0%, 44%);
+  grid-area: loc;
+  font-family: Anonymous Pro;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 28px;
+  color: hsl(0, 0%, 44%);
 
-    &:hover {
-        color: hsl(0, 0%, 58%);
-    }
+  &:hover {
+    color: hsl(0, 0%, 58%);
+  }
+}
+
+.channelSel {
+  position: absolute;
+  top: 32px;
+  border-radius: 8px;
+  color: hsl(208, 100%, 97%);
+  box-shadow: 2px 2px 8px 2px rgba(13, 13, 13, 0.739);
+  background-color: hsl(0, 0%, 8%);
+  width: 20vw;
+  height: 80vh;
 }
 
 .chat-div {
-    grid-area: chat_area;
-    height: 100%;
-    background-color: hsl(0, 0%, 0%);
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    display: grid;
-    align-content: space-between;
+  grid-area: chat_area;
+  height: 100%;
+  color: aliceblue;
+  background-color: hsl(0, 0%, 0%);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  display: grid;
+  grid-template-areas:
+    "chat"
+    "typIndc"
+    "msgBox";
+  grid-template-rows: 12.5fr 0.5fr 0.8fr;
 
-    .msg-form {
-        padding: 9px;
-        width: auto;
-        .inputmsg {
-            width: -webkit-fill-available;
-            background-color: hsl(0, 0%, 15%);
-            caret-color: hsl(208, 100%, 97%);
-            color: hsl(0, 0%, 80%);
-            border: hsla(0, 0%, 0%, 0);
-            height: 3.6vh;
-            font-size: 1.8vh;
-            padding-left: 9px;
-            padding-right: 9px;
-            border-radius: 4px;
-            &:focus-visible {
-                background-color: hsl(0, 0%, 22%);
-                outline: none;
-            }
-            &::selection {
-                background: hsl(25, 53%, 36%);
-            }
-        }
+  .typing-indicator {
+    background-color: hsl(0, 0%, 10%);
+    margin: 9px;
+    margin-bottom: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin-bottom: -3px;
+    // margin-left: 13px;
+    // margin-right: 13px;
+  }
+
+  .msg-form {
+    padding: 9px;
+    padding-top: 0;
+    width: auto;
+    .inputmsg {
+      width: -webkit-fill-available;
+      background-color: hsl(0, 0%, 15%);
+      caret-color: hsl(208, 100%, 97%);
+      color: hsl(0, 0%, 80%);
+      border: hsla(0, 0%, 0%, 0);
+      height: 3.8vh;
+      font-size: 1.8vh;
+      padding-left: 9px;
+      padding-right: 9px;
+      border-radius: 4px;
+      &:focus-visible {
+        background-color: hsl(0, 0%, 22%);
+        outline: none;
+      }
+      &::selection {
+        background: hsl(25, 53%, 36%);
+      }
     }
+  }
 }

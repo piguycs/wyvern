@@ -15,7 +15,19 @@ interface props {}
 
 function app() {
   const [user, setUser] = useState<any>(null);
-  const value = { user, setUser };
+  const [servers, setServers] = useState<string[]>();
+  const [currServer, setCurrServer] = useState<string>();
+  const [currChannel, setCurrChannel] = useState<number>(0);
+  const value = {
+    user,
+    setUser,
+    servers,
+    setServers,
+    currServer,
+    currChannel,
+    setCurrChannel,
+    setCurrServer,
+  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
