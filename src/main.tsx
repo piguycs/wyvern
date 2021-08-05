@@ -17,6 +17,8 @@ function Main() {
       {/* ROUTES TO HOMEPAGE, WILL HAVE SOME NICE STUFF HERE */}
       <Route path="/home">
         <a href="app">app</a>
+        <br />
+        <a href="signin">signin</a>
       </Route>
 
       <Route path="/app">

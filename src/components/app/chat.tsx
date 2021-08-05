@@ -14,6 +14,9 @@ function chat() {
   const [locationName, setLocationName] = useState<string>();
   const [message, setMessage] = useState<string>("");
   const [showChannels, setShowChannels] = useState(false);
+  const [chatHistory, setChatHistory] = useState<string[]>([]);
+  const [newMsgDataList, setNewMsgDataList] = useState<any[]>([]);
+  const [newMessages, setNewMessages] = useState<JSX.Element[]>([]);
   const [socket] = useState(io("https://Wyvern-API.huski3.repl.co/api/chat"));
 
   useEffect(() => {
@@ -54,9 +57,31 @@ function chat() {
 
   useEffect(() => {
     socket.on("message", (data) => {
-      console.log(data.content);
+      setNewMsgDataList((newMsgDataList) => [...newMsgDataList, data]);
+      console.log("new message:", data);
     });
   }, [socket]);
+
+  useEffect(() => {
+    var listlen = newMsgDataList.length;
+    setNewMessages((x) => [
+      ...x,
+      <div className="message-div" key={"m_" + (listlen - 1)}>
+        {listlen > 1 ? (
+          newMsgDataList[listlen - 2].id ==
+          newMsgDataList[listlen - 1].id ? null : (
+            <b>{newMsgDataList[listlen - 1]?.username[0]}</b>
+          )
+        ) : (
+          <b>{newMsgDataList[listlen - 1]?.username[0]}</b>
+        )}
+        <p id={"m_" + (listlen - 1)} className="message">
+          {newMsgDataList[listlen - 1]?.content}
+        </p>
+      </div>,
+    ]);
+    document.getElementById("m_" + (listlen - 1))?.scrollIntoView();
+  }, [newMsgDataList]);
 
   // Input handeling
   window.onkeydown = () => document.getElementById("msgInpt")!.focus();
@@ -89,8 +114,9 @@ function chat() {
       </div>
       {showChannels && <div className="channelSel">hello</div>}
       <div className="chat-div">
-        <p>{currServer}</p>
-        <div className="typing-indicator">Typing</div>
+        <div className="chatHistory">{newMessages}</div>
+
+        {<div className={undefined && "typing-indicator"}></div>}
         <form className="msg-form" onSubmit={sendMessage} autoComplete="off">
           <input
             id="msgInpt"
