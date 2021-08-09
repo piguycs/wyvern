@@ -9,17 +9,25 @@ function chat() {
     useContext(AuthContext);
 
   // local variables for chat.tsx
+
+  // server info
   const [serverName, setServerName] = useState<string>("servername");
   const [channelName, setChannelName] = useState<string>("channel");
-  const [locationName, setLocationName] = useState<string>();
-  const [message, setMessage] = useState<string>("");
   const [showChannels, setShowChannels] = useState(false);
+  // Parsed version of
+  const [locationName, setLocationName] = useState<string>();
+  // Current message
+  const [message, setMessage] = useState<string>("");
   const [newMsgDataList, setNewMsgDataList] = useState<any[]>([]);
   const [newMessages, setNewMessages] = useState<JSX.Element[]>([]);
+  // socketio
   const [socket] = useState(io("https://Wyvern-API.huski3.repl.co/api/chat"));
 
+  // Set Current location of the user on display
   useEffect(() => {
     setLocationName(serverName + " /" + channelName);
+    setNewMsgDataList([])
+    setNewMessages([])
   }, [serverName, channelName]);
 
   // Gets server name
@@ -34,6 +42,20 @@ function chat() {
     const data = await response.json();
 
     return data.name;
+  }
+
+  async function getHistory() {
+    var api_url =
+      "https://wyvern-api.huski3.repl.co/api/" +
+      `${currServer}${currChannel}` +
+      "/history?token=" +
+      user?.uid +
+      "start=0&end=99";
+
+    const response = await fetch(api_url);
+    const data = await response.json();
+
+    return data.map((msg: any) => msg);
   }
 
   useEffect(() => {
@@ -64,31 +86,30 @@ function chat() {
 
   // Append new messages to the render
   // Also group messages from same sender
+  function isConsecutive(prevID: null | number, currID: number, name: string) {
+    if (prevID != null && prevID == currID) {
+      return null;
+    } else {
+      return <b>{name}</b>;
+    }
+  }
+
   useEffect(() => {
     var listlen = newMsgDataList.length;
-    setNewMessages((x) => [
-      ...x,
-      <div className="message-div" key={"m_" + (listlen - 1)}>
-        {listlen > 1 ? (
-          newMsgDataList[listlen - 2].id ==
-          newMsgDataList[listlen - 1].id ? null : (
-            <div>
-              {/* <img draggable={false} src={user?.photoURL} /> */}
-              <b className="name">{newMsgDataList[listlen - 1]?.username[0]}</b>
-            </div>
-          )
-        ) : (
-          <div>
-            {/* <img draggable={false} src={user?.photoURL} /> */}
-            <b className="name">{newMsgDataList[listlen - 1]?.username[0]}</b>
-          </div>
-        )}
-        <p id={"m_" + (listlen - 1)} className="message">
-          {newMsgDataList[listlen - 1]?.content}
-        </p>
-      </div>,
-    ]);
-    document.getElementById("m_" + (listlen - 1))?.scrollIntoView();
+    if (listlen > 0) {
+      setNewMessages((_) => [
+        ..._,
+        <div className="message-div" key={"m_" + (listlen - 1)}>
+          {isConsecutive(
+            listlen > 1 ? newMsgDataList[listlen - 2].id : null,
+            newMsgDataList[listlen - 1].id,
+            newMsgDataList[listlen - 1].username[0]
+          )}
+          <p className="message">{newMsgDataList[listlen - 1].content}</p>
+        </div>,
+      ]);
+      document.getElementById("m_" + (listlen - 1))?.scrollIntoView();
+    }
   }, [newMsgDataList]);
 
   // Input handeling
@@ -122,9 +143,7 @@ function chat() {
       </div>
       {showChannels && <div className="channelSel">hello</div>}
       <div className="chat-div">
-        <div className="chatHistory">
-          {newMessages}
-        </div>
+        <div className="chatHistory">{newMessages}</div>
 
         {<div className={undefined && "typing-indicator"}></div>}
         <form className="msg-form" onSubmit={sendMessage} autoComplete="off">

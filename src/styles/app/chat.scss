@@ -34,7 +34,7 @@
 
 .chat-div {
   grid-area: chat_area;
-  height: 100%;
+
   color: aliceblue;
   background-color: hsl(0, 0%, 0%);
   border-top-left-radius: 8px;
@@ -45,6 +45,11 @@
     "typIndc"
     "msgBox";
   grid-template-rows: 12.5fr 0.5fr 0.8fr;
+  .chatHistory {
+    height: 87vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 
   .message-div {
     margin-bottom: 0px;
