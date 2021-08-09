@@ -14,7 +14,6 @@ function chat() {
   const [locationName, setLocationName] = useState<string>();
   const [message, setMessage] = useState<string>("");
   const [showChannels, setShowChannels] = useState(false);
-  const [chatHistory, setChatHistory] = useState<string[]>([]);
   const [newMsgDataList, setNewMsgDataList] = useState<any[]>([]);
   const [newMessages, setNewMessages] = useState<JSX.Element[]>([]);
   const [socket] = useState(io("https://Wyvern-API.huski3.repl.co/api/chat"));
@@ -23,6 +22,7 @@ function chat() {
     setLocationName(serverName + " /" + channelName);
   }, [serverName, channelName]);
 
+  // Gets server name
   async function getServerName() {
     var server_api = (id: string) =>
       "https://wyvern-api.huski3.repl.co/api/" +
@@ -62,6 +62,8 @@ function chat() {
     });
   }, [socket]);
 
+  // Append new messages to the render
+  // Also group messages from same sender
   useEffect(() => {
     var listlen = newMsgDataList.length;
     setNewMessages((x) => [
@@ -70,10 +72,16 @@ function chat() {
         {listlen > 1 ? (
           newMsgDataList[listlen - 2].id ==
           newMsgDataList[listlen - 1].id ? null : (
-            <b>{newMsgDataList[listlen - 1]?.username[0]}</b>
+            <div>
+              {/* <img draggable={false} src={user?.photoURL} /> */}
+              <b className="name">{newMsgDataList[listlen - 1]?.username[0]}</b>
+            </div>
           )
         ) : (
-          <b>{newMsgDataList[listlen - 1]?.username[0]}</b>
+          <div>
+            {/* <img draggable={false} src={user?.photoURL} /> */}
+            <b className="name">{newMsgDataList[listlen - 1]?.username[0]}</b>
+          </div>
         )}
         <p id={"m_" + (listlen - 1)} className="message">
           {newMsgDataList[listlen - 1]?.content}
@@ -114,7 +122,9 @@ function chat() {
       </div>
       {showChannels && <div className="channelSel">hello</div>}
       <div className="chat-div">
-        <div className="chatHistory">{newMessages}</div>
+        <div className="chatHistory">
+          {newMessages}
+        </div>
 
         {<div className={undefined && "typing-indicator"}></div>}
         <form className="msg-form" onSubmit={sendMessage} autoComplete="off">

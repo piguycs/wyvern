@@ -46,6 +46,20 @@
     "msgBox";
   grid-template-rows: 12.5fr 0.5fr 0.8fr;
 
+  .message-div {
+    margin-bottom: 0px;
+    margin-left: 1em;
+    &:hover {
+      background-color: hsl(0, 0%, 5%);
+    }
+    .name {
+      margin-top: 1em !important;
+    }
+    .message {
+      margin: 0;
+    }
+  }
+
   .typing-indicator {
     background-color: hsl(0, 0%, 10%);
     margin: 9px;
