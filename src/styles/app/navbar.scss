@@ -1,0 +1,51 @@
+.nav {
+  display: grid;
+  grid-template-areas:
+    "brand"
+    "nav_area";
+  grid-template-rows: 32px;
+}
+
+.branding {
+  margin-left: 3px;
+  margin-top: 5px;
+}
+
+.nav-div {
+  background-color: hsl(0, 0%, 0%);
+  border-top-right-radius: 8px;
+  color: hsl(208, 100%, 97%);
+  display: grid;
+  align-content: space-between;
+  justify-items: center;
+
+  .server-list {
+    display: grid;
+    padding-top: 10px;
+
+    .serverBtn {
+      background-color: hsl(0, 0%, 15%);
+      border: hsl(0, 0%, 0%);
+      color: hsl(208, 100%, 97%);
+      box-shadow: 0 0 11px 2px hsl(0, 0%, 10%);
+      border-radius: 8px;
+      width: 50px;
+      aspect-ratio: 1/1;
+      margin: 3px;
+      &:hover {
+        background-color: hsl(0, 0%, 20%);
+      }
+      &:active {
+        background-color: hsl(0, 0%, 25%);
+        box-shadow: 0 0 11px 6px hsl(0, 0%, 10%);
+      }
+    }
+  }
+
+  .user-pfp {
+    border-radius: 50%;
+    width: 65%;
+    padding: 15px;
+    bottom: 0;
+  }
+}
