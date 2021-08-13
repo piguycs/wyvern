@@ -5,11 +5,12 @@ import { AuthContext } from "../../contexts/AuthContext";
 import "../../styles/app/navbar.scss";
 
 function navbar() {
-  const { user, servers, setServers, setCurrServer } = useContext(AuthContext);
+  const { user, servers, setServers, setCurrServer, setUserTag } =
+    useContext(AuthContext);
 
   const [dragId, setDragId] = useState();
 
-  const handleDrag = (ev:any) => {
+  const handleDrag = (ev: any) => {
     setDragId(ev.currentTarget?.id);
   };
 
@@ -26,6 +27,7 @@ function navbar() {
     const response = await fetch(usr_api, { headers: authHeader });
     const data = await response.json();
 
+    setUserTag(data.tag);
     setServers(data.servers);
   }
 
@@ -43,7 +45,7 @@ function navbar() {
       />
       <div className="nav-div">
         <div className="server-list">
-          {user &&
+          {user ? (
             servers &&
             servers.map((x: any, index: number) => (
               <button
@@ -58,7 +60,8 @@ function navbar() {
               >
                 {x}
               </button>
-            ))}
+            ))
+          ) : <b>loading...</b>}
         </div>
 
         {user && (

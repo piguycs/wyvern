@@ -5,11 +5,11 @@ import io from "socket.io-client";
 import "../../styles/app/chat.scss";
 
 function chat() {
-  const { user, currServer, currChannel, setCurrChannel } =
+  const { user, currServer, currChannel, setCurrChannel, userTag } =
     useContext(AuthContext);
 
   // local variables for chat.tsx
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   // server info
   const [serverName, setServerName] = useState<string>("servername");
   const [channelName, setChannelName] = useState<string>("channel");
@@ -20,14 +20,23 @@ function chat() {
   const [message, setMessage] = useState<string>("");
   const [newMsgDataList, setNewMsgDataList] = useState<any[]>([]);
   const [newMessages, setNewMessages] = useState<JSX.Element[]>([]);
+  // history
+  const [history, setHistory] = useState<any[]>();
+  const [historyList, setHistoryList] = useState<JSX.Element[]>();
   // socketio
   const [socket] = useState(io("https://Wyvern-API.huski3.repl.co/api/chat"));
+
+  useEffect(() => {
+    if (user) {
+      setIsLoggedIn(true);
+    } else setIsLoggedIn(false);
+  }, [user]);
 
   // Set Current location of the user on display
   useEffect(() => {
     setLocationName(serverName + " /" + channelName);
-    setNewMsgDataList([])
-    setNewMessages([])
+    setNewMsgDataList([]);
+    setNewMessages([]);
   }, [serverName, channelName]);
 
   // Gets server name
@@ -49,8 +58,7 @@ function chat() {
       "https://wyvern-api.huski3.repl.co/api/" +
       `${currServer}${currChannel}` +
       "/history?token=" +
-      user?.uid +
-      "start=0&end=99";
+      user?.uid;
 
     const response = await fetch(api_url);
     const data = await response.json();
@@ -74,14 +82,22 @@ function chat() {
       socket.emit("joined", {
         serverchannel: `${currServer}${currChannel}`,
       });
+      socket.emit("joined", {
+        serverchannel: userTag,
+      });
     }
   }, [currServer]);
 
+  // socket
   useEffect(() => {
     socket.on("message", (data) => {
       setNewMsgDataList((newMsgDataList) => [...newMsgDataList, data]);
       console.log("new message:", data);
     });
+
+    socket.on("pinged", (data) => {
+      console.log("ping", data)
+    })
   }, [socket]);
 
   // Append new messages to the render
@@ -139,23 +155,25 @@ function chat() {
           currServer && setShowChannels(!showChannels);
         }}
       >
-        {locationName}
+        {isLoggedIn ?  locationName : "user not logged in"}
       </div>
       {showChannels && <div className="channelSel">hello</div>}
       <div className="chat-div">
         <div className="chatHistory">{newMessages}</div>
 
         {<div className={undefined && "typing-indicator"}></div>}
-        <form className="msg-form" onSubmit={sendMessage} autoComplete="off">
-          <input
-            id="msgInpt"
-            className="inputmsg"
-            autoFocus={true}
-            type="text"
-            value={message}
-            onChange={(event) => setMessage(event.target.value)}
-          />
-        </form>
+        {isLoggedIn && (
+          <form className="msg-form" onSubmit={sendMessage} autoComplete="off">
+            <input
+              id="msgInpt"
+              className="inputmsg"
+              autoFocus={true}
+              type="text"
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+            />
+          </form>
+        )}
       </div>
     </div>
   );

@@ -18,15 +18,18 @@ function app() {
   const [servers, setServers] = useState<string[]>();
   const [currServer, setCurrServer] = useState<string>();
   const [currChannel, setCurrChannel] = useState<number>(0);
+  const [userTag, setUserTag] = useState()
   const value = {
     user,
     setUser,
     servers,
     setServers,
     currServer,
+    setCurrServer,
     currChannel,
     setCurrChannel,
-    setCurrServer,
+    userTag,
+    setUserTag,
   };
 
   useEffect(() => {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { auth, googleLogin, signout } from "../firebase/firebase";
 
@@ -54,6 +55,7 @@ export default function login() {
       <button disabled={loading} onClick={userSignout}>
         sign out
       </button>
+      {user && <Link to="/app">app</Link>}
       <pre>{user && JSON.stringify(user, null, 2)}</pre>
     </AuthContext.Provider>
   );
