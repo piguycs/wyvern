@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { auth, googleLogin, signout } from "../firebase/firebase";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 export default function login() {
   const [loading, setLoading] = useState(false);
@@ -60,40 +59,6 @@ export default function login() {
         {user && <Link to="/app">app</Link>}
         <pre>{user && JSON.stringify(user, null, 2)}</pre>
       </AuthContext.Provider>
-      <DragDropContext onDragEnd={(result) => console.log(result)}>
-        <Droppable droppableId="sus">
-          {(provided) => (
-            <div
-              className="something"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              <Draggable key={"1"} draggableId={"1"} index={1}>
-                {(provided) => (
-                  <p
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    hello1
-                  </p>
-                )}
-              </Draggable>
-              <Draggable key={"2"} draggableId={"2"} index={2}>
-                {(provided) => (
-                  <p
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    hello2
-                  </p>
-                )}
-              </Draggable>
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
     </div>
   );
 }

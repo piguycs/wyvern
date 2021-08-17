@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 
 import App from "./components/app/app";
 import Login from "./components/login";
+import Dnd from "./components/dnd_test"
 
 import "./styles/main.scss";
 
@@ -23,6 +24,10 @@ function Main() {
 
       <Route path="/app">
         <App />
+      </Route>
+
+      <Route path="/dnd">
+        <Dnd />
       </Route>
 
       <Route path="/signin" component={Login} />
