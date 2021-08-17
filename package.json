@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build --base=./",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "deploy": "tsc && vite build --base=./ && firebase deploy"
   },
   "dependencies": {
     "@react-firebase/auth": "^0.2.10",
