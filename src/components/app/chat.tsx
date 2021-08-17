@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import io from "socket.io-client";
+import ping from "../../assets/ping.wav";
 
 import "../../styles/app/chat.scss";
 
 function chat() {
-  const { user, currServer, currChannel, setCurrChannel, userTag } =
+  const { user, currServer, currChannel, setCurrChannel, userTag, pfp } =
     useContext(AuthContext);
 
   // local variables for chat.tsx
@@ -25,6 +26,8 @@ function chat() {
   const [historyList, setHistoryList] = useState<JSX.Element[]>();
   // socketio
   const [socket] = useState(io("https://Wyvern-API.huski3.repl.co/api/chat"));
+  // ping sound
+  const [pingaudio, setPingaudio] = useState(new Audio(ping));
 
   useEffect(() => {
     if (user) {
@@ -96,17 +99,24 @@ function chat() {
     });
 
     socket.on("pinged", (data) => {
-      console.log("ping", data)
-    })
+      console.log("ping", data);
+      pingaudio.play();
+    });
   }, [socket]);
 
   // Append new messages to the render
   // Also group messages from same sender
-  function isConsecutive(prevID: null | number, currID: number, name: string) {
+  function isConsecutive(prevID: null | number, currID: number, name: string, content:string = "hello") {
     if (prevID != null && prevID == currID) {
-      return null;
+      return <p className="message-cons">{content}</p>;
     } else {
-      return <b>{name}</b>;
+      return (
+        <div className="message-div-pfpgrid">
+          <img className="chatpfp" src={pfp} />
+          <b className="username">{name}</b>
+          <p className="message">{content}</p>
+        </div>
+      );
     }
   }
 
@@ -116,12 +126,16 @@ function chat() {
       setNewMessages((_) => [
         ..._,
         <div className="message-div" key={"m_" + (listlen - 1)}>
-          {isConsecutive(
-            listlen > 1 ? newMsgDataList[listlen - 2].id : null,
-            newMsgDataList[listlen - 1].id,
-            newMsgDataList[listlen - 1].username[0]
-          )}
-          <p className="message">{newMsgDataList[listlen - 1].content}</p>
+          {
+            // This line calls a function which does conditional rendering
+            isConsecutive(
+              listlen > 1 ? newMsgDataList[listlen - 2].id : null,
+              newMsgDataList[listlen - 1].id,
+              newMsgDataList[listlen - 1].username[0],
+              newMsgDataList[listlen - 1].content
+            )
+          }
+          {/* <p className="message">{newMsgDataList[listlen - 1].content}</p> */}
         </div>,
       ]);
       document.getElementById("m_" + (listlen - 1))?.scrollIntoView();
@@ -155,7 +169,7 @@ function chat() {
           currServer && setShowChannels(!showChannels);
         }}
       >
-        {isLoggedIn ?  locationName : "user not logged in"}
+        {isLoggedIn ? locationName : "user not logged in"}
       </div>
       {showChannels && <div className="channelSel">hello</div>}
       <div className="chat-div">

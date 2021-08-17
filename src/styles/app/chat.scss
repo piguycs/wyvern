@@ -44,24 +44,56 @@
     "chat"
     "typIndc"
     "msgBox";
-  grid-template-rows: 12.5fr 0.5fr 0.8fr;
+  grid-template-rows: 12.5fr 0.5fr 50px;
   .chatHistory {
-    height: 87vh;
+    height: 85vh;
     overflow-x: hidden;
     overflow-y: auto;
+    padding: 10px;
   }
 
   .message-div {
     margin-bottom: 0px;
-    margin-left: 1em;
+    margin-left: 0.5rem;
+    // padding: 0.3rem;
+    border-radius: 5px;
     &:hover {
-      background-color: hsl(0, 0%, 5%);
+      background-color: hsl(0, 0%, 9.5%);
+      box-shadow: 0 0 5px 1px hsl(0, 0%, 9.5%);
+      .message-div-pfpgrid {
+        .chatpfp {
+          box-shadow: 0 0 5px 1px hsl(0, 0%, 2%);
+        }
+      }
     }
-    .name {
-      margin-top: 1em !important;
+    .message-div-pfpgrid {
+      display: grid;
+      padding-top: 7px;
+      grid-template-areas:
+        "pfp  username"
+        "pfp  msg";
+      grid-template-columns: 3.5rem;
+      grid-template-rows: 1.7rem;
+      align-items: end;
+      .chatpfp {
+        border-radius: 50%;
+        height: 3rem;
+        position: relative;
+        top: 20px;
+      }
+      .username {
+        grid-area: username;
+      }
+      .message {
+        margin: 0;
+        grid-area: msg;
+        // padding-left: 3.5rem;
+      }
     }
-    .message {
-      margin: 0;
+    .message-cons {
+      margin-block-start: 0;
+      margin-block-end: 0;
+      padding-left: 3.5rem
     }
   }
 
@@ -82,6 +114,7 @@
     width: auto;
     .inputmsg {
       width: -webkit-fill-available;
+      height: 40px;
       background-color: hsl(0, 0%, 15%);
       caret-color: hsl(208, 100%, 97%);
       color: hsl(0, 0%, 80%);

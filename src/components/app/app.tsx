@@ -19,6 +19,7 @@ function app() {
   const [currServer, setCurrServer] = useState<string>();
   const [currChannel, setCurrChannel] = useState<number>(0);
   const [userTag, setUserTag] = useState()
+  const [pfp, setpfp] = useState()
   const value = {
     user,
     setUser,
@@ -30,6 +31,8 @@ function app() {
     setCurrChannel,
     userTag,
     setUserTag,
+    pfp,
+    setpfp
   };
 
   useEffect(() => {

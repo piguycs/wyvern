@@ -3,6 +3,6 @@
     grid-template-areas: "nav   chat";
     grid-template-columns: 90px;
     gap: 8px;
-    height: 100vh;
+    min-height: 100vh;
     background-color: hsl(0, 0%, 15%);
 }

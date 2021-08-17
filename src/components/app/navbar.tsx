@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import branding from "../../assets/branding.svg";
 import { AuthContext } from "../../contexts/AuthContext";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 import "../../styles/app/navbar.scss";
 
 function navbar() {
-  const { user, servers, setServers, setCurrServer, setUserTag } =
+  const { user, servers, setServers, setCurrServer, setUserTag, setpfp } =
     useContext(AuthContext);
 
   const [dragId, setDragId] = useState();
@@ -29,6 +30,7 @@ function navbar() {
 
     setUserTag(data.tag);
     setServers(data.servers);
+    setpfp(data.pfp)
   }
 
   function setSelServer(server: string) {
@@ -44,25 +46,27 @@ function navbar() {
         alt="branding"
       />
       <div className="nav-div">
-        <div className="server-list">
-          {user ? (
-            servers &&
-            servers.map((x: any, index: number) => (
-              <button
-                id={"slb_" + index}
-                key={"slb_" + index}
-                draggable={true}
-                onDragOver={(ev) => ev.preventDefault()}
-                onDragStart={handleDrag}
-                onDrop={handleDrag}
-                className="serverBtn"
-                onClick={() => setSelServer(x)}
-              >
-                {x}
-              </button>
-            ))
-          ) : <b>loading...</b>}
-        </div>
+          <div className="server-list">
+            {user ? (
+              servers &&
+              servers.map((x: any, index: number) => (
+                <button
+                  id={"slb_" + index}
+                  key={"slb_" + index}
+                  draggable={true}
+                  onDragOver={(ev) => ev.preventDefault()}
+                  onDragStart={handleDrag}
+                  onDrop={handleDrag}
+                  className="serverBtn"
+                  onClick={() => setSelServer(x)}
+                >
+                  {x}
+                </button>
+              ))
+            ) : (
+              <b>loading...</b>
+            )}
+          </div>
 
         {user && (
           <img draggable={false} src={user.photoURL} className="user-pfp" />
