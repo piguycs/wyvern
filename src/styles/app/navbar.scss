@@ -32,6 +32,10 @@
       width: 50px;
       aspect-ratio: 1/1;
       margin: 3px;
+      list-style-type: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       &:hover {
         background-color: hsl(0, 0%, 20%);
       }
