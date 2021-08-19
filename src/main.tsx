@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 
 import App from "./components/app/app";
 import Login from "./components/login";
+import SignUp from "./components/signup";
 
 import "./styles/main.scss";
 
@@ -19,13 +20,13 @@ function Main() {
         <a href="app">app</a>
         <br />
         <a href="signin">signin</a>
+        <br />
+        <a href="signup">Create User</a>
       </Route>
 
-      <Route path="/app">
-        <App />
-      </Route>
-
+      <Route path="/app" component={App} />
       <Route path="/signin" component={Login} />
+      <Route path="/signup" component={SignUp} />
     </Router>
   );
 }

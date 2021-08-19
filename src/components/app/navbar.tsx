@@ -6,7 +6,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import "../../styles/app/navbar.scss";
 
 function navbar() {
-  const { user, servers, setServers, setCurrServer, setUserTag, setpfp } =
+  const { user, servers, userTag, setServers, setCurrServer, setUserTag, setpfp } =
     useContext(AuthContext);
 
   useEffect(() => {
@@ -85,7 +85,12 @@ function navbar() {
             )}
           </Droppable>
           {user && (
-            <img draggable={false} src={user.photoURL} className="user-pfp" />
+            <img
+              draggable={false}
+              src={user.photoURL}
+              className="user-pfp"
+              onClick={() => console.log(userTag)}
+            />
           )}
         </div>
       </nav>
