@@ -30,6 +30,15 @@ function chat() {
   const [pingaudio, setPingaudio] = useState(new Audio(ping));
 
   useEffect(() => {
+    return () => {
+      console.log(`${currServer}${currChannel}`);
+      socket.emit("left", {
+        serverchannel: `${currServer}${currChannel}`,
+      });
+    };
+  }, []);
+
+  useEffect(() => {
     if (user) {
       setIsLoggedIn(true);
     } else setIsLoggedIn(false);
@@ -101,13 +110,13 @@ function chat() {
 
   async function computeHist() {
     // Gets the last few messages
-    let histlist = await getHistory()
-    let histlistJSX:any = []
+    let histlist = await getHistory();
+    let histlistJSX: any = [];
     // histlist now has a list of the past messages
 
     // .map here to go through every message on histlist
     // currmsg is the current msg to be converted to jsx
-    histlist.map((currmsg:any, index:number) => {
+    histlist.map((currmsg: any, index: number) => {
       histlistJSX = [
         ...histlistJSX,
         <div className="message-div" id={"h_" + index} key={"h_" + index}>
@@ -122,11 +131,11 @@ function chat() {
           }
         </div>,
       ];
-    })
-    setHistoryList(histlistJSX)
-    
+    });
+    setHistoryList(histlistJSX);
+
     // to clear up memory
-    histlistJSX = histlist = []
+    histlistJSX = histlist = [];
 
     // scrolls into view
     document.getElementById("h_79")?.scrollIntoView();
@@ -180,7 +189,7 @@ function chat() {
         ..._,
         <div
           className="message-div"
-          id={"m_" + (listlen)}
+          id={"m_" + listlen}
           key={"m_" + (listlen - 1)}
         >
           {
@@ -195,13 +204,13 @@ function chat() {
         </div>,
       ]);
     }
-    document.getElementById("m_" + (listlen))?.scrollIntoView();
+    document.getElementById("m_" + listlen)?.scrollIntoView();
   }, [newMsgDataList]);
 
   useEffect(() => {
-    var c_hist = document.getElementById("c_hist")
+    var c_hist = document.getElementById("c_hist");
     c_hist!.scrollTop = c_hist!.scrollHeight;
-  }, [newMessages])
+  }, [newMessages]);
 
   // Input handeling
   window.onkeydown = () => document.getElementById("msgInpt")!.focus();

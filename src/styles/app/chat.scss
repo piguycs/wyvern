@@ -50,6 +50,20 @@
     overflow-x: hidden;
     overflow-y: auto;
     padding: 10px;
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+      background: hsla(0, 0%, 33%, 0);
+    }
+    &::-webkit-scrollbar-thumb {
+      background: hsla(0, 0%, 10%, 0.486);
+      border-radius: 20px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: hsla(0, 0%, 37%, 0.315);
+      width: 8px;
+    }
   }
 
   .message-div {

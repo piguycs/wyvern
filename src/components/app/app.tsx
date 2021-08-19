@@ -19,7 +19,8 @@ function app() {
   const [currServer, setCurrServer] = useState<string>();
   const [currChannel, setCurrChannel] = useState<number>(0);
   const [userTag, setUserTag] = useState()
-  const [pfp, setpfp] = useState()
+  const [pfp, setpfp] = useState("https://placekitten.com/g/200/200");
+  const [legacy, isLegacy] = useState<string | false>(false)
   const value = {
     user,
     setUser,
@@ -32,14 +33,20 @@ function app() {
     userTag,
     setUserTag,
     pfp,
-    setpfp
+    setpfp,
+    legacy,
+    isLegacy,
   };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return unsubscribe;
+    if (!legacy) {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        setUser(user);
+      });
+      return unsubscribe;
+    } else {
+      setUser({ uid: legacy, photoURL: "https://placekitten.com/g/200/200" });
+    }
   }, []);
 
   return (

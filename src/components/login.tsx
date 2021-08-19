@@ -47,6 +47,11 @@ export default function login() {
     return unsubscribe;
   }, []);
 
+  function legacyAuth(event:any) {
+    console.log(event)
+    event.preventDefault();
+  }
+
   return (
     <div>
       <AuthContext.Provider value={value}>
@@ -58,6 +63,11 @@ export default function login() {
         </button>
         {user && <Link to="/app">app</Link>}
         <pre>{user && JSON.stringify(user, null, 2)}</pre>
+        {!user && (
+          <form>
+            <input id="leg_auth_inpt" onSubmit={legacyAuth}></input>
+          </form>
+        )}
       </AuthContext.Provider>
     </div>
   );
