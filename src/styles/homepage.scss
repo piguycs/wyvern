@@ -1,0 +1,41 @@
+// This part are general classes to be used in css
+.background-dark {
+    background-color: #082032;
+    color: hsl(190, 11%, 89%);
+}
+
+.home-body {
+    margin: 0;
+    color: hsl(190, 11%, 89%);
+    background-color: #082032;
+}
+
+.home-nav {
+    background-color: #082032;
+    color: hsl(190, 11%, 89%);
+    height: 60px;
+}
+
+.home-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.opening {
+    background-color: #16a0ad;
+    height: 100%;
+}
+
+.spacer {
+    aspect-ratio: 950/350;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.spacer-1 {
+    background-image: url('../assets/homepage-spacer-wyvern.svg');
+}

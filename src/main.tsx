@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import App from "./components/app/app";
 import Login from "./components/login";
 import SignUp from "./components/signup";
+import HomePage from "./components/homepage";
 
 import "./styles/main.scss";
 
@@ -22,11 +23,14 @@ function Main() {
         <a href="signin">signin</a>
         <br />
         <a href="signup">Create User</a>
+        <br />
+        <a href="landingpage">something hot</a>
       </Route>
 
       <Route path="/app" component={App} />
       <Route path="/signin" component={Login} />
       <Route path="/signup" component={SignUp} />
+      <Route path="/landingpage" component={HomePage} />
     </Router>
   );
 }

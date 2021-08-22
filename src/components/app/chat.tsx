@@ -13,6 +13,7 @@ function chat() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // server info
   const [serverName, setServerName] = useState<string>("servername");
+  const [channelList, setChannelList] = useState<any[]>();
   const [channelName, setChannelName] = useState<string>("channel");
   const [showChannels, setShowChannels] = useState(false);
   // Parsed version of
@@ -54,7 +55,7 @@ function chat() {
   }, [serverName, channelName]);
 
   // Gets server name
-  async function getServerName() {
+  async function getServerInfo() {
     var server_api = (id: string) =>
       "https://wyvern-api.huski3.repl.co/api/" +
       id +
@@ -64,7 +65,10 @@ function chat() {
     const response = await fetch(server_api(currServer));
     const data = await response.json();
 
-    return data.name;
+    return {
+      name: data.name,
+      channels: data.channels?.map((channel: any) => channel.name),
+    };
   }
 
   // Append new messages to the render
@@ -148,8 +152,16 @@ function chat() {
   }, [currServer, currChannel]);
 
   useEffect(() => {
-    currServer && getServerName().then((name) => setServerName(name));
+    currServer &&
+      getServerInfo().then(({ name, channels }) => {
+        setServerName(name);
+        setChannelList(channels);
+      });
   }, [currServer]);
+
+  useEffect(() => {
+    console.log(channelList);
+  }, [channelList]);
 
   // messages
   useEffect(() => {
@@ -243,9 +255,16 @@ function chat() {
       </div>
       {showChannels && <div className="channelSel">hello</div>}
       <div className="chat-div">
-        <div id="c_hist" className="chatHistory">
-          {historyList}
-          {newMessages}
+        <div className="flex_c_c">
+          <div id="c_hist" className="chatHistory">
+            {historyList}
+            {newMessages}
+          </div>
+          <div className="channels">
+            {channelList?.map((chname: string, index: number) => (
+              <p key={index}>{chname}</p>
+            ))}
+          </div>
         </div>
 
         {<div className={undefined && "typing-indicator"}></div>}

@@ -1,6 +1,5 @@
 make --dry-run --always-make --keep-going --print-directory
 make: Entering directory '/home/thepiguy/wyvern'
+npm run dev
 make: Leaving directory '/home/thepiguy/wyvern'
- 
-make: *** No targets.  Stop.
  

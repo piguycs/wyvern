@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+ 
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul  9 19:36:44 2021
+# Make data base, printed on Sat Aug 21 15:41:12 2021
 
 # Variables
 
@@ -49,11 +51,11 @@ VSCODE_CWD = /mnt/c/Users/kunal/AppData/Local/Programs/Microsoft VS Code
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/thepiguy/.vscode-server/bin/2d23c42a936db1c7b3b06f918cde29561cc47cd6/bin:/home/thepiguy/.local/share/nvm/v16.3.0/bin/:/home/thepiguy/.local/bin/:/home/thepiguy/.cargo/bin:/home/thepiguy/.local/share/nvm/v16.3.0/bin/:/home/thepiguy/.local/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries/redist/intel64/compiler:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files (x86)/Touch Portal/plugins/adb/platform-tools:/mnt/c/MinGW/bin:/mnt/c/Program Files/PowerShell/7/:/mnt/c/Users/kunal/.poetry/bin:/mnt/c/Windows/Microsoft.NET/Framework64/v4.0.30319:/mnt/c/Users/kunal/Documents/ffmpeg-4.3.1-2020-11-08-full_build/bin:/mnt/c/Users/kunal/AppData/Local/Programs/Python/Python39:/mnt/c/Users/kunal/AppData/Local/Programs/Python/Python39/Scripts:/mnt/c/Program Files (x86)/QuickTime/QTSystem/:/mnt/c/Users/kunal/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/kunal/Documents/My Bin/bin:/mnt/c/Users/kunal/Documents/Neovim/bin:/mnt/c/Users/kunal/Documents/flutter/bin:/mnt/c/Gradle/gradle-7.0.1/bin:/mnt/c/Program Files/Git LFS:/mnt/c/Users/kunal/AppData/Local/Programs/Python/Python39/Scripts/:/mnt/c/Users/kunal/AppData/Local/Programs/Python/Python39/:/mnt/c/Users/kunal/.poetry/bin:/mnt/c/Ruby27-x64/bin:/mnt/c/Users/kunal/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/kunal/AppData/Local/atom/bin:/mnt/c/Users/kunal/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/kunal/.dotnet/tools:/mnt/c/Users/kunal/AppData/Local/GitHubDesktop/bin:/mnt/c/Users/kunal/AppData/Roaming/npm:/mnt/c/Program Files (x86)/GitHub CLI/:/mnt/c/Users/kunal/AppData/Roaming/cabal/bin:/mnt/c/ProgramData/chocolatey/lib/ghc/tools/ghc-8.10.2/bin:/mnt/c/tools/msys64:/mnt/c/tools/neovim/Neovim/bin:/mnt/c/Users/kunal/AppData/Local/hyper/app-3.0.2/resources/bin
+PATH = /home/thepiguy/.vscode-server/bin/3866c3553be8b268c8a7f8c0482c0c0177aa8bfa/bin:/home/thepiguy/.local/share/nvm/v16.3.0/bin/:/home/thepiguy/.local/bin/:/home/thepiguy/.deno/bin:/home/thepiguy/.cargo/bin:/home/thepiguy/.local/share/nvm/v16.3.0/bin/:/home/thepiguy/.local/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries/redist/intel64/compiler:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files (x86)/Touch Portal/plugins/adb/platform-tools:/mnt/c/MinGW/bin:/mnt/c/Program Files/PowerShell/7/:/mnt/c/Users/kunal/.poetry/bin:/mnt/c/Windows/Microsoft.NET/Framework64/v4.0.30319:/mnt/c/Users/kunal/Documents/ffmpeg-4.3.1-2020-11-08-full_build/bin:/mnt/c/Users/kunal/AppData/Local/Programs/Python/Python39:/mnt/c/Users/kunal/AppData/Local/Programs/Python/Python39/Scripts:/mnt/c/Program Files (x86)/QuickTime/QTSystem/:/mnt/c/Users/kunal/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/kunal/Documents/My Bin/bin:/mnt/c/Users/kunal/Documents/Neovim/bin:/mnt/c/Users/kunal/Documents/flutter/bin:/mnt/c/Gradle/gradle-7.0.1/bin:/mnt/c/Program Files/Git LFS:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Users/kunal/AppData/Local/Programs/Python/Python39/Scripts/:/mnt/c/Users/kunal/AppData/Local/Programs/Python/Python39/:/mnt/c/Users/kunal/.poetry/bin:/mnt/c/Ruby27-x64/bin:/mnt/c/Users/kunal/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/kunal/AppData/Local/atom/bin:/mnt/c/Users/kunal/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/kunal/.dotnet/tools:/mnt/c/Users/kunal/AppData/Local/GitHubDesktop/bin:/mnt/c/Users/kunal/AppData/Roaming/npm:/mnt/c/Program Files (x86)/GitHub CLI/:/mnt/c/Users/kunal/AppData/Roaming/cabal/bin:/mnt/c/ProgramData/chocolatey/lib/ghc/tools/ghc-8.10.2/bin:/mnt/c/tools/msys64:/mnt/c/tools/neovim/Neovim/bin:/mnt/c/Users/kunal/AppData/Local/hyper/app-3.0.2/resources/bin
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-55b957b9-5f43-427e-867e-69db8eb1a667.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-074a42a8-fe31-4061-8a81-db5930d6f58d.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # automatic
@@ -65,7 +67,7 @@ PWD = /home/thepiguy/wyvern
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/12_interop
+WSL_INTEROP = /run/WSL/10_interop
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/server/remoteExtensionHostProcess
 # environment
@@ -91,7 +93,7 @@ MAKE_VERSION := 4.2.1
 # environment
 USER = thepiguy
 # makefile
-.DEFAULT_GOAL := 
+.DEFAULT_GOAL := serve
 # environment
 OMF_CONFIG = /home/thepiguy/.config/omf
 # environment
@@ -131,7 +133,7 @@ SUFFIXES :=
 # default
 .INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
 # environment
-VSCODE_INJECT_NODE_MODULE_LOOKUP_PATH = /home/thepiguy/.vscode-server/bin/2d23c42a936db1c7b3b06f918cde29561cc47cd6/remote/node_modules
+VSCODE_INJECT_NODE_MODULE_LOOKUP_PATH = /home/thepiguy/.vscode-server/bin/3866c3553be8b268c8a7f8c0482c0c0177aa8bfa/remote/node_modules
 # default
 .RECIPEPREFIX := 
 # environment
@@ -143,7 +145,7 @@ VSCODE_EXTHOST_WILL_SEND_SOCKET = true
 # environment
 WSL_DISTRO_NAME = Ubuntu-20.04
 # variable set hash-table stats:
-# Load=66/1024=6%, Rehash=0, Collisions=4/90=4%
+# Load=66/1024=6%, Rehash=0, Collisions=4/91=4%
 
 # Pattern-specific Variable Values
 
@@ -151,9 +153,9 @@ WSL_DISTRO_NAME = Ubuntu-20.04
 
 # Directories
 
-# . (device 2064, inode 184424): 15 files, no impossibilities.
+# . (device 2064, inode 184424): 21 files, no impossibilities.
 
-# 15 files, no impossibilities in 1 directories.
+# 21 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -171,7 +173,7 @@ all:
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-09 19:36:33.74
+#  Last modified 2021-07-09 19:44:56.48
 #  File has been updated.
 #  Successfully updated.
 
@@ -181,22 +183,27 @@ makefile:
 #  Modification time never checked.
 #  File has not been updated.
 
+serve:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 2):
+	npm run dev
+
 # files hash-table stats:
-# Load=4/1024=0%, Rehash=0, Collisions=0/14=0%
+# Load=5/1024=0%, Rehash=0, Collisions=0/15=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 20 / storage = 206 B / avg = 10 B
-# current buf: size = 8162 B / used = 206 B / count = 20 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 27 / storage = 272 B / avg = 10 B
+# current buf: size = 8162 B / used = 272 B / count = 27 / avg = 10 B
 
-# strcache performance: lookups = 24 / hit rate = 16%
+# strcache performance: lookups = 32 / hit rate = 15%
 # hash-table stats:
-# Load=20/8192=0%, Rehash=0, Collisions=1/24=4%
-# Finished Make data base on Fri Jul  9 19:36:44 2021
+# Load=27/8192=0%, Rehash=0, Collisions=1/32=3%
+# Finished Make data base on Sat Aug 21 15:41:12 2021
 
- 
-make: *** No rule to make target 'all'.  Stop.
  
