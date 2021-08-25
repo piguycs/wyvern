@@ -24,7 +24,7 @@ function navbar() {
 
     setUserTag(data.tag);
     setServers(data.servers);
-    setpfp(data.pfp);
+    setpfp(data.pfp ? data.pfp : "https://placekitten.com/g/200/200");
   }
 
   function setSelServer(server: string) {

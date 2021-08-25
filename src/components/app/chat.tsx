@@ -40,6 +40,10 @@ function chat() {
   }, []);
 
   useEffect(() => {
+    console.log(pfp);
+  }, []);
+
+  useEffect(() => {
     if (user) {
       setIsLoggedIn(true);
     } else setIsLoggedIn(false);
@@ -50,7 +54,7 @@ function chat() {
     setLocationName(serverName + " /" + channelName);
     setNewMsgDataList([]);
     setNewMessages([]);
-    setHistoryList([]);
+    // setHistoryList([]);
     setHistory([]);
   }, [serverName, channelName]);
 
@@ -77,14 +81,15 @@ function chat() {
     prevID: null | number,
     currID: number,
     name: string,
-    content: string = "hello"
+    content: string = "hello",
+    profilepic = "https://placekitten.com/200/200"
   ) {
     if (prevID != null && prevID == currID) {
       return <p className="message-cons">{content}</p>;
     } else {
       return (
         <div className="message-div-pfpgrid">
-          <img className="chatpfp" src={pfp} />
+          <img className="chatpfp pfp-crop" src={profilepic} />
           <b className="username">{name}</b>
           <p className="message">{content}</p>
         </div>
@@ -107,9 +112,8 @@ function chat() {
         id: msg.author_id,
         username: msg.author_name[0],
         content: msg.content,
-      }))
-      .slice(1)
-      .slice(-80);
+        pfp: msg.pfp[0][0],
+      }));
   }
 
   async function computeHist() {
@@ -130,7 +134,8 @@ function chat() {
               histlist.len > 1 ? currmsg.id : null,
               currmsg.id,
               currmsg.username[0],
-              currmsg.content
+              currmsg.content,
+              currmsg.pfp
             )
           }
         </div>,
@@ -142,7 +147,7 @@ function chat() {
     histlistJSX = histlist = [];
 
     // scrolls into view
-    document.getElementById("h_79")?.scrollIntoView();
+    document.getElementById("h_49")?.scrollIntoView();
   }
 
   useEffect(() => {
@@ -176,7 +181,7 @@ function chat() {
         serverchannel: `${currServer}${currChannel}`,
       });
       socket.emit("joined", {
-        serverchannel: userTag,
+        serverchannel: user.uid,
       });
     }
   }, [currServer]);
@@ -210,7 +215,8 @@ function chat() {
               listlen > 1 ? newMsgDataList[listlen - 2].id : null,
               newMsgDataList[listlen - 1].id,
               newMsgDataList[listlen - 1].username[0],
-              newMsgDataList[listlen - 1].content
+              newMsgDataList[listlen - 1].content,
+              newMsgDataList[listlen - 1].pfp[0][0]
             )
           }
         </div>,

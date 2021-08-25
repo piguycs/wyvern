@@ -16,25 +16,18 @@ export default function signup() {
     try {
       const response = await fetch(create_user);
       const data = await response.json();
-      if ((await data.status) == 300) {
-        throw 300;
-      } else {
-        if ((await data.status) == 200) {
-          console.log("%cACCOUNT CREATED", "color: #6EFF30");
-          console.log(await data.userid);
-        }
-      }
+
+      console.log("%cACCOUNT CREATED", "color: #6EFF30");
+      console.log(await data.userid);
 
 
     } catch (err) {
-      if (err == 300) {
-        console.log(
-          "%c300 %cUser already exists, signing out",
-          "color: #FF2442",
-          "color: #FFB830"
-        );
-        signout();
-      }
+      console.log(
+        "%c300 %cUser already exists, signing out",
+        "color: #FF2442",
+        "color: #FFB830"
+      );
+      signout();
     }
   }
 

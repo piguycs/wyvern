@@ -39,14 +39,10 @@ function app() {
   };
 
   useEffect(() => {
-    if (!legacy) {
-      const unsubscribe = auth.onAuthStateChanged((user) => {
-        setUser(user);
-      });
-      return unsubscribe;
-    } else {
-      setUser({ uid: legacy, photoURL: "https://placekitten.com/g/200/200" });
-    }
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+    return unsubscribe;
   }, []);
 
   return (
