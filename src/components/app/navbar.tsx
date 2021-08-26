@@ -6,8 +6,16 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import "../../styles/app/navbar.scss";
 
 function navbar() {
-  const { user, servers, userTag, setServers, setCurrServer, setUserTag, setpfp } =
-    useContext(AuthContext);
+  const {
+    user,
+    servers,
+    userTag,
+    setServers,
+    setCurrServer,
+    setCurrChannel,
+    setUserTag,
+    setpfp,
+  } = useContext(AuthContext);
 
   useEffect(() => {
     user && getServers(user.uid);
@@ -28,6 +36,7 @@ function navbar() {
   }
 
   function setSelServer(server: string) {
+    setCurrChannel("0")
     setCurrServer(server);
   }
 

@@ -6,29 +6,26 @@ import ping from "../../assets/ping.wav";
 import "../../styles/app/chat.scss";
 
 function chat() {
-  const { user, currServer, currChannel, setCurrChannel, userTag, pfp } =
+  const { user, currServer, currChannel, setCurrChannel } =
     useContext(AuthContext);
 
   // local variables for chat.tsx
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // server info
-  const [serverName, setServerName] = useState<string>("servername");
+  const [channelIDList, setChannelIDList] = useState<any[]>();
   const [channelList, setChannelList] = useState<any[]>();
+  const [serverName, setServerName] = useState<string>("servername");
   const [channelName, setChannelName] = useState<string>("channel");
-  const [showChannels, setShowChannels] = useState(false);
-  // Parsed version of
-  const [locationName, setLocationName] = useState<string>();
   // Current message
   const [message, setMessage] = useState<string>("");
   const [newMsgDataList, setNewMsgDataList] = useState<any[]>([]);
   const [newMessages, setNewMessages] = useState<JSX.Element[]>([]);
   // history
-  const [history, setHistory] = useState<any[]>([]);
   const [historyList, setHistoryList] = useState<JSX.Element[]>([]);
   // socketio
   const [socket] = useState(io("https://Wyvern-API.huski3.repl.co/api/chat"));
   // ping sound
-  const [pingaudio, setPingaudio] = useState(new Audio(ping));
+  const [pingaudio] = useState(new Audio(ping));
 
   useEffect(() => {
     return () => {
@@ -40,23 +37,10 @@ function chat() {
   }, []);
 
   useEffect(() => {
-    console.log(pfp);
-  }, []);
-
-  useEffect(() => {
     if (user) {
       setIsLoggedIn(true);
     } else setIsLoggedIn(false);
   }, [user]);
-
-  // Set Current location of the user on display
-  useEffect(() => {
-    setLocationName(serverName + " /" + channelName);
-    setNewMsgDataList([]);
-    setNewMessages([]);
-    // setHistoryList([]);
-    setHistory([]);
-  }, [serverName, channelName]);
 
   // Gets server name
   async function getServerInfo() {
@@ -72,6 +56,7 @@ function chat() {
     return {
       name: data.name,
       channels: data.channels?.map((channel: any) => channel.name),
+      id: data.channels?.map((channel: any) => channel.id),
     };
   }
 
@@ -107,13 +92,12 @@ function chat() {
     const response = await fetch(api_url);
     const data = await response.json();
 
-    return data
-      .map((msg: any) => ({
-        id: msg.author_id,
-        username: msg.author_name[0],
-        content: msg.content,
-        pfp: msg.pfp[0][0],
-      }));
+    return data.map((msg: any) => ({
+      id: msg.author_id,
+      username: msg.author_name[0],
+      content: msg.content,
+      pfp: msg.pfp[0][0],
+    }));
   }
 
   async function computeHist() {
@@ -143,11 +127,11 @@ function chat() {
     });
     setHistoryList(histlistJSX);
 
+    // scrolls into view
+    document.getElementById("h_" + (histlist.length - 1))?.scrollIntoView();
+
     // to clear up memory
     histlistJSX = histlist = [];
-
-    // scrolls into view
-    document.getElementById("h_49")?.scrollIntoView();
   }
 
   useEffect(() => {
@@ -158,15 +142,12 @@ function chat() {
 
   useEffect(() => {
     currServer &&
-      getServerInfo().then(({ name, channels }) => {
+      getServerInfo().then(({ name, channels, id }) => {
         setServerName(name);
+        setChannelIDList(id);
         setChannelList(channels);
       });
-  }, [currServer]);
-
-  useEffect(() => {
-    console.log(channelList);
-  }, [channelList]);
+  }, [currServer, currChannel]);
 
   // messages
   useEffect(() => {
@@ -184,7 +165,7 @@ function chat() {
         serverchannel: user.uid,
       });
     }
-  }, [currServer]);
+  }, [currServer, currChannel]);
 
   // socket
   useEffect(() => {
@@ -197,6 +178,11 @@ function chat() {
       console.log("ping", data);
       pingaudio.play();
     });
+
+    socket.on("status", (data) => {
+      console.log("%cSYS BROADCAST:", "color:red", data);
+    });
+    
   }, [socket]);
 
   useEffect(() => {
@@ -232,9 +218,11 @@ function chat() {
 
   // Input handeling
   window.onkeydown = () => document.getElementById("msgInpt")!.focus();
+  // send message
   function sendMessage(event: any) {
     if (message != "") {
       if (message != "") {
+        console.log("message is:", message);
         socket.emit("text", {
           token: user?.uid, // Set this per user
           serverchannel: `${currServer}${currChannel}`, // where the message was sent
@@ -242,24 +230,32 @@ function chat() {
           type: "text", // this should be changed depending on the type of input
         });
       }
-      setMessage("");
-      event.preventDefault();
     }
     setMessage("");
     event.preventDefault();
   }
 
+  function changeChannel(id: string, name: string) {
+    setCurrChannel(id);
+    setChannelName(name);
+  }
+
+  const [lastChannel, setLastChannel] = useState(/*WIP*/);
+
+  // clears some stuff from other rooms
+  useEffect(() => {
+    setNewMsgDataList([]);
+    setNewMessages([]);
+  }, [currServer, currChannel]);
+  useEffect(() => {
+    setChannelName("general");
+  }, [currServer])
+
   return (
     <div id="main_area">
-      <div
-        className="chat-loc unsel"
-        onClick={() => {
-          currServer && setShowChannels(!showChannels);
-        }}
-      >
-        {isLoggedIn ? locationName : "user not logged in"}
+      <div className="chat-loc unsel">
+        {isLoggedIn ? serverName + " /" + channelName : "user not logged in"}
       </div>
-      {showChannels && <div className="channelSel">hello</div>}
       <div className="chat-div">
         <div className="flex_c_c">
           <div id="c_hist" className="chatHistory">
@@ -267,8 +263,17 @@ function chat() {
             {newMessages}
           </div>
           <div className="channels">
-            {channelList?.map((chname: string, index: number) => (
-              <p key={index}>{chname}</p>
+            {channelIDList?.map((chname: string, index: number) => (
+              <p
+                id={chname}
+                key={index}
+                className="channelName"
+                onClick={(e: any) =>
+                  changeChannel(e.target.id, channelList![index])
+                }
+              >
+                {channelList && channelList[index]}
+              </p>
             ))}
           </div>
         </div>
