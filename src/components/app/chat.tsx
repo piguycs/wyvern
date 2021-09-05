@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import io from "socket.io-client";
-import ping from "../../assets/ping.wav";
 
 import "../../styles/app/chat.scss";
+
+import sysmsgimg from "../../assets/system-messages-yellow.svg";
+import ping from "../../assets/ping.wav";
 
 function chat() {
   const { user, currServer, currChannel, setCurrChannel } =
@@ -60,15 +62,52 @@ function chat() {
     };
   }
 
+  // A WIP FUNCTION (DO NOT FORGET I PUT THIS HERE)
+  var sysid = 0
+  function sysMsg(msg = "THIS IS A SYSTEM LOG", id:number) {
+    return (
+      <div
+        className="message-div"
+        id={"sysmsg_" + id}
+        key={"sysmsg_" + id}
+      >
+        <div className="message-div-pfpgrid">
+          <img
+            src={sysmsgimg}
+            className="chatpfp pfp-crop"
+          ></img>
+          <div>
+            <b className="username">wyvrenman</b>
+            <a
+              className="hide"
+              style={{ color: "aqua" }}
+              onClick={() => {
+                let currsysmsg = document.getElementById("sysmsg_" + id);
+                currsysmsg!.style.display = "none";
+              }}
+            >
+              hide
+            </a>
+          </div>
+          <p className="message">{msg}</p>
+        </div>
+      </div>
+    );
+  }
+
   // Append new messages to the render
   // Also group messages from same sender
   function isConsecutive(
-    prevID: null | number,
-    currID: number,
-    name: string,
-    content: string = "hello",
-    profilepic = "https://placekitten.com/200/200"
+    prevID: null | number = null,
+    currID: number | null = null,
+    name: string | null = null,
+    content: string | null = null,
+    profilepic: string = "https://placekitten.com/200/200",
+    isFirst: boolean = false
   ) {
+    if (isFirst) {
+      return <button key="h_load">LOAD HISTORY (WIP)</button>;
+    }
     if (prevID != null && prevID == currID) {
       return <p className="message-cons">{content}</p>;
     } else {
@@ -78,7 +117,7 @@ function chat() {
           <b className="username">{name}</b>
           <p className="message">{content}</p>
         </div>
-      );
+      );    
     }
   }
 
@@ -105,6 +144,19 @@ function chat() {
     let histlist = await getHistory();
     let histlistJSX: any = [];
     // histlist now has a list of the past messages
+
+    // this code runs before reading history
+    // hence can add any element to dom before history
+    histlistJSX = [
+      isConsecutive(
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        true
+      ),
+    ];
 
     // .map here to go through every message on histlist
     // currmsg is the current msg to be converted to jsx
@@ -160,6 +212,7 @@ function chat() {
     if (currServer != null) {
       socket.emit("joined", {
         serverchannel: `${currServer}${currChannel}`,
+        // usertoken : user.uid
       });
       socket.emit("joined", {
         serverchannel: user.uid,
@@ -180,9 +233,9 @@ function chat() {
     });
 
     socket.on("status", (data) => {
-      console.log("%cSYS BROADCAST:", "color:red", data);
+      setNewMessages((_) => [..._, sysMsg(data.msg, sysid)]);
+      sysid = sysid + 1;
     });
-    
   }, [socket]);
 
   useEffect(() => {
@@ -240,7 +293,19 @@ function chat() {
     setChannelName(name);
   }
 
+
+  // {so index 0 will be server 0[and text in the index will be last channel],[]}
+  // so if last channel in server 12 was general(id 1234)
+  // {[]..12[1234]}
+
   const [lastChannel, setLastChannel] = useState(/*WIP*/);
+  const [adsAreVisible, setAds] = useState<"hidden" | "visible">("visible");
+
+  useEffect(() => {
+    if (channelIDList) {
+      setAds("hidden");
+    }
+  }, [channelIDList]);
 
   // clears some stuff from other rooms
   useEffect(() => {
@@ -249,7 +314,7 @@ function chat() {
   }, [currServer, currChannel]);
   useEffect(() => {
     setChannelName("general");
-  }, [currServer])
+  }, [currServer]);
 
   return (
     <div id="main_area">
@@ -263,18 +328,23 @@ function chat() {
             {newMessages}
           </div>
           <div className="channels">
-            {channelIDList?.map((chname: string, index: number) => (
-              <p
-                id={chname}
-                key={index}
-                className="channelName"
-                onClick={(e: any) =>
-                  changeChannel(e.target.id, channelList![index])
-                }
-              >
-                {channelList && channelList[index]}
-              </p>
-            ))}
+            <div>
+              {channelIDList?.map((chname: string, index: number) => (
+                <p
+                  id={chname}
+                  key={index}
+                  className="channelName"
+                  onClick={(e: any) =>
+                    changeChannel(e.target.id, channelList![index])
+                  }
+                >
+                  {channelList && channelList[index]}
+                </p>
+              ))}
+            </div>
+            <div className="promotions" style={{ visibility: adsAreVisible }}>
+              #AD
+            </div>
           </div>
         </div>
 

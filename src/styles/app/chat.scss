@@ -1,3 +1,7 @@
+@mixin bg-grey($greyness: 8) {
+  background-color: hsl(0, 0%, $greyness);
+}
+
 #main_area {
   display: grid;
   grid-template-areas:
@@ -22,10 +26,10 @@
 }
 
 .chat-div {
+  @include bg-grey(0%);
+  
   grid-area: chat_area;
-
   color: aliceblue;
-  background-color: hsl(0, 0%, 0%);
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   display: grid;
@@ -43,19 +47,30 @@
   }
 
   .channels {
+    @include bg-grey(8%);
     margin: 16px;
     margin-bottom: 0px;
     border-radius: 12px;
-    background-color: hsl(0, 0%, 8%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     // min-width: 200px;
     .channelName {
-      background-color: hsl(0, 0%, 15%);
+      @include bg-grey(15%);
       border-radius: 8px;
       padding: 5px;
       margin: 5px;
       &:hover {
-        background-color: hsl(0, 0%, 20%);
+        @include bg-grey(20%);
       }
+    }
+    .promotions {
+      @include bg-grey(8%);
+      box-shadow: 0 0 5px 1px hsla(323, 71%, 20%, 0.746);
+      border-radius: 8px;
+      padding: 5px;
+      margin: 8px;
+      height: 10%;
     }
   }
 
@@ -86,7 +101,7 @@
     // padding: 0.3rem;
     border-radius: 5px;
     &:hover {
-      background-color: hsl(0, 0%, 9.5%);
+      @include bg-grey(9.5%);
       box-shadow: 0 0 5px 1px hsl(0, 0%, 9.5%);
       .message-div-pfpgrid {
         .chatpfp {
@@ -130,7 +145,7 @@
   }
 
   .typing-indicator {
-    background-color: hsl(0, 0%, 10%);
+    @include bg-grey(10%);
     margin: 9px;
     margin-bottom: 0;
     border-top-left-radius: 5px;
@@ -147,7 +162,7 @@
     .inputmsg {
       width: -webkit-fill-available;
       height: 40px;
-      background-color: hsl(0, 0%, 15%);
+      @include bg-grey(15%);
       caret-color: hsl(208, 100%, 97%);
       color: hsl(0, 0%, 80%);
       border: hsla(0, 0%, 0%, 0);
@@ -157,7 +172,7 @@
       padding-right: 9px;
       border-radius: 4px;
       &:focus-visible {
-        background-color: hsl(0, 0%, 22%);
+        @include bg-grey(22%);
         outline: none;
       }
       &::selection {
