@@ -62,20 +62,29 @@ function chat() {
     };
   }
 
+  const [usertagdisp, setusertagdisp] = useState<string>();
+  async function showProfile(id:any) {
+    const response = await fetch(`https://wyvern-api.huski3.repl.co/api/user?id=${id}`);
+    const data = await response.json();
+    
+    setusertagdisp(`${data.username}'s tag is @${data.tag}`);
+    document.getElementById("profile")!.style.display = "block";
+
+    console.log(data.tag)
+  }
+
   // A WIP FUNCTION (DO NOT FORGET I PUT THIS HERE)
   var sysid = 0
   function sysMsg(msg = "THIS IS A SYSTEM LOG", id:number) {
     return (
       <div
+        style={{ backgroundColor: "rgba(11, 36, 38, 0.65)"}}
         className="message-div"
         id={"sysmsg_" + id}
         key={"sysmsg_" + id}
       >
         <div className="message-div-pfpgrid">
-          <img
-            src={sysmsgimg}
-            className="chatpfp pfp-crop"
-          ></img>
+          <img src={sysmsgimg} className="chatpfp pfp-crop"></img>
           <div>
             <b className="username">wyvrenman</b>
             <a
@@ -109,12 +118,19 @@ function chat() {
       return <button key="h_load">LOAD HISTORY (WIP)</button>;
     }
     if (prevID != null && prevID == currID) {
+      // does not have profile pic or username
       return <p className="message-cons">{content}</p>;
     } else {
       return (
         <div className="message-div-pfpgrid">
-          <img className="chatpfp pfp-crop" src={profilepic} />
-          <b className="username">{name}</b>
+          <img
+            className="chatpfp pfp-crop"
+            src={profilepic}
+            onClick={() => showProfile(currID)}
+          />
+          <b className="username" onClick={() => showProfile(currID)}>
+            {name}
+          </b>
           <p className="message">{content}</p>
         </div>
       );    
@@ -234,6 +250,7 @@ function chat() {
 
     socket.on("status", (data) => {
       setNewMessages((_) => [..._, sysMsg(data.msg, sysid)]);
+      console.log(data)
       sysid = sysid + 1;
     });
   }, [socket]);
@@ -255,7 +272,8 @@ function chat() {
               newMsgDataList[listlen - 1].id,
               newMsgDataList[listlen - 1].username[0],
               newMsgDataList[listlen - 1].content,
-              newMsgDataList[listlen - 1].pfp[0][0]
+              newMsgDataList[listlen - 1].pfp[0][0],
+              false
             )
           }
         </div>,
@@ -361,6 +379,20 @@ function chat() {
             />
           </form>
         )}
+      </div>
+      <div
+        id="profile"
+        onClick={() => {
+          document.getElementById("profile")!.style.display = "none";
+        }}
+      >
+        <div className="viewer">
+          {/* VERY WIP (because of having to make multiple api calls) */}
+          {/* I WILL IMPLIMENT A CACHE WHICH GETS UPDATED PER CHANNEL BASED ON MEMBERS */}
+          WIP
+          <br />
+          {usertagdisp}
+        </div>
       </div>
     </div>
   );
