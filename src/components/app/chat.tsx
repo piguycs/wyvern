@@ -229,7 +229,7 @@ function chat() {
       `https://wyvern-api.huski3.repl.co/api/join_server?token=${user.uid}&invite=746272`
     );
     const data = await response.json();
-    console.log("Joined server 15 with status code", data.status);
+    console.log("Joined server 16 with status code", data.status);
   }
 
   useEffect(() => {
