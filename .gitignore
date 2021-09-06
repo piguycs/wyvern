@@ -7,3 +7,5 @@ dist-ssr
 .firebase/
 
 *.log
+
+src/assets/system-messages.svgZone.Identifier
