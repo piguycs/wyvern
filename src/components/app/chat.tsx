@@ -419,7 +419,7 @@ function chat() {
             <div className="promotions" style={{ visibility: adsAreVisible }}>
               this is an ad spot but we dont have any monetisation yet so here u
               go I will advertise server 16
-              <a style={{ color: "aqua" }} onClick={() => joinserver(12)}>
+              <a style={{ color: "aqua" }} onClick={() => joinserver(16)}>
                 join server 16 (demo server)
               </a>
             </div>
