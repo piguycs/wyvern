@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  JSXElementConstructor,
+} from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import io from "socket.io-client";
 
@@ -28,6 +34,9 @@ function chat() {
   const [socket] = useState(io("https://Wyvern-API.huski3.repl.co/api/chat"));
   // ping sound
   const [pingaudio] = useState(new Audio(ping));
+
+  // SMORT WAY OF SELECTING DOM ELEMENTS
+  const typingIndicator = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     return () => {
@@ -63,22 +72,24 @@ function chat() {
   }
 
   const [usertagdisp, setusertagdisp] = useState<string>();
-  async function showProfile(id:any) {
-    const response = await fetch(`https://wyvern-api.huski3.repl.co/api/user?id=${id}`);
+  async function showProfile(id: any) {
+    const response = await fetch(
+      `https://wyvern-api.huski3.repl.co/api/user?id=${id}`
+    );
     const data = await response.json();
-    
+
     setusertagdisp(`${data.username}'s tag is @${data.tag}`);
     document.getElementById("profile")!.style.display = "block";
 
-    console.log(data.tag)
+    console.log(data.tag);
   }
 
   // A WIP FUNCTION (DO NOT FORGET I PUT THIS HERE)
-  var sysid = 0
-  function sysMsg(msg = "THIS IS A SYSTEM LOG", id:number) {
+  var sysid = 0;
+  function sysMsg(msg = "THIS IS A SYSTEM LOG", id: number) {
     return (
       <div
-        style={{ backgroundColor: "rgba(11, 36, 38, 0.65)"}}
+        style={{ backgroundColor: "rgba(11, 36, 38, 0.65)" }}
         className="message-div"
         id={"sysmsg_" + id}
         key={"sysmsg_" + id}
@@ -95,7 +106,7 @@ function chat() {
                 currsysmsg!.style.display = "none";
               }}
             >
-              hide
+              &nbsp;hide
             </a>
           </div>
           <p className="message">{msg}</p>
@@ -133,7 +144,7 @@ function chat() {
           </b>
           <p className="message">{content}</p>
         </div>
-      );    
+      );
     }
   }
 
@@ -202,6 +213,15 @@ function chat() {
     histlistJSX = histlist = [];
   }
 
+  // a function to join a server, its sorta invite code but wip
+  async function joinserver(server: number) {
+    const response = await fetch(
+      `https://wyvern-api.huski3.repl.co/api/join_server?token=${user.uid}&serverid=${server}`
+    );
+    const data = await response.json();
+    console.log("Joined server 15 with status code", data.status);
+  }
+
   useEffect(() => {
     if (currServer != undefined && currChannel != undefined) {
       computeHist();
@@ -243,6 +263,14 @@ function chat() {
       console.log("new message:", data);
     });
 
+    socket.on("typed", (data) => {
+      const tyindc = typingIndicator.current;
+      tyindc!.innerText = `${data.username} is typing`;
+      setTimeout(function () {
+      tyindc!.innerText = "";
+      }, 5000);
+    });
+
     socket.on("pinged", (data) => {
       console.log("ping", data);
       pingaudio.play();
@@ -250,7 +278,7 @@ function chat() {
 
     socket.on("status", (data) => {
       setNewMessages((_) => [..._, sysMsg(data.msg, sysid)]);
-      console.log(data)
+      console.log(data);
       sysid = sysid + 1;
     });
   }, [socket]);
@@ -311,7 +339,6 @@ function chat() {
     setChannelName(name);
   }
 
-
   // {so index 0 will be server 0[and text in the index will be last channel],[]}
   // so if last channel in server 12 was general(id 1234)
   // {[]..12[1234]}
@@ -361,12 +388,21 @@ function chat() {
               ))}
             </div>
             <div className="promotions" style={{ visibility: adsAreVisible }}>
-              #AD
+              this is an ad spot but we dont have any monetisation yet so here u
+              go I will advertise server 15
+              <a style={{ color: "aqua" }} onClick={() => joinserver(15)}>
+                {" "}
+                join server 15
+              </a>
             </div>
           </div>
         </div>
 
-        {<div className={undefined && "typing-indicator"}></div>}
+        {
+          <div className={"typing-indicator"} ref={typingIndicator}>
+            
+          </div>
+        }
         {isLoggedIn && (
           <form className="msg-form" onSubmit={sendMessage} autoComplete="off">
             <input

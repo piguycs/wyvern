@@ -147,7 +147,7 @@
   }
 
   .typing-indicator {
-    @include bg-grey(10%);
+    background-color: rgba(0,0,0,0);
     margin: 9px;
     margin-bottom: 0;
     border-top-left-radius: 5px;
