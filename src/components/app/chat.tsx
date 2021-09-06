@@ -222,21 +222,11 @@ function chat() {
   }
 
   // a function to join a server, its sorta invite code but wip
-  async function joinserver(server: number) {
+  async function joinserver() {
     console.log("creating invite to server 16", user.uid);
     
-    // creates an invite to the server
-    const invresp = await fetch(
-      `https://wyvern-api.huski3.repl.co/api/create_invite?token=487489579487&serverid=${server}`
-    );
-    const invdata = await invresp.json();
-    console.log(
-      "invite created, attempting to join server with invite code:",
-      invdata?.invite
-    );
-    
     const response = await fetch(
-      `https://wyvern-api.huski3.repl.co/api/join_server?token=${user.uid}&invite=${invdata?.invite}`
+      `https://wyvern-api.huski3.repl.co/api/join_server?token=${user.uid}&invite=746272`
     );
     const data = await response.json();
     console.log("Joined server 15 with status code", data.status);
@@ -419,7 +409,7 @@ function chat() {
             <div className="promotions" style={{ visibility: adsAreVisible }}>
               this is an ad spot but we dont have any monetisation yet so here u
               go I will advertise server 16
-              <a style={{ color: "aqua" }} onClick={() => joinserver(16)}>
+              <a style={{ color: "aqua" }} onClick={() => joinserver()}>
                 join server 16 (demo server)
               </a>
             </div>
