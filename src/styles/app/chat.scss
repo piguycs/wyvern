@@ -27,7 +27,7 @@
 
 .chat-div {
   @include bg-grey(0%);
-  
+
   grid-area: chat_area;
   color: aliceblue;
   border-top-left-radius: 8px;
@@ -147,7 +147,7 @@
   }
 
   .typing-indicator {
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0, 0, 0, 0);
     margin: 9px;
     margin-bottom: 0;
     border-top-left-radius: 5px;
@@ -184,7 +184,6 @@
   }
 }
 
-
 #profile {
   background-color: hsla(0, 0%, 10%, 0.85);
   display: none;
@@ -198,10 +197,41 @@
   color: white;
   border-radius: 12px;
   padding: 12px;
-  width: 40vw;
+  width: 30vw;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   aspect-ratio: 1/1;
+
+  display: grid;
+  grid-template-areas:
+    "pfp  name"
+    "nothing  status";
+  grid-template-columns: 1.5fr 4fr;
+  grid-auto-rows: 1.5fr 4fr;
+  align-items: end;
+  gap: 5px;
+  .profilepfp {
+    border-radius: 50%;
+    object-fit: cover;
+    height: 130px;
+    width: 130px;
+    aspect-ratio: 1/1;
+  }
+  .profileuname {
+    font-size: 2rem;
+  }
+  .tag {
+    font-size: 1rem;
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+  .status {
+    grid-area: status;
+    align-self: start;
+    padding-top: 5px;
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
 }

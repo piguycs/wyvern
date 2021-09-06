@@ -71,15 +71,23 @@ function chat() {
     };
   }
 
-  const [usertagdisp, setusertagdisp] = useState<string>();
+  const [usertagdisp, setusertagdisp] = useState<any>();
   async function showProfile(id: any) {
+    document.getElementById("profile")!.style.display = "block";
     const response = await fetch(
       `https://wyvern-api.huski3.repl.co/api/user?id=${id}`
     );
     const data = await response.json();
-
-    setusertagdisp(`${data.username}'s tag is @${data.tag}`);
-    document.getElementById("profile")!.style.display = "block";
+    const pfpresp = await fetch(
+      `https://wyvern-api.huski3.repl.co/api/user/pfp?id=${id}`
+    );
+    const pfpdata = await pfpresp.json();
+    setusertagdisp({
+      uname: data.username,
+      tag: data.tag,
+      status: data.status,
+      pfp: pfpdata.pfp,
+    });
 
     console.log(data.tag);
   }
@@ -215,8 +223,20 @@ function chat() {
 
   // a function to join a server, its sorta invite code but wip
   async function joinserver(server: number) {
+    console.log("creating invite to server 16", user.uid);
+    
+    // creates an invite to the server
+    const invresp = await fetch(
+      `https://wyvern-api.huski3.repl.co/api/create_invite?token=487489579487&serverid=${server}`
+    );
+    const invdata = await invresp.json();
+    console.log(
+      "invite created, attempting to join server with invite code:",
+      invdata?.invite
+    );
+    
     const response = await fetch(
-      `https://wyvern-api.huski3.repl.co/api/join_server?token=${user.uid}&serverid=${server}`
+      `https://wyvern-api.huski3.repl.co/api/join_server?token=${user.uid}&invite=${invdata?.invite}`
     );
     const data = await response.json();
     console.log("Joined server 15 with status code", data.status);
@@ -267,7 +287,7 @@ function chat() {
       const tyindc = typingIndicator.current;
       tyindc!.innerText = `${data.username} is typing`;
       setTimeout(function () {
-      tyindc!.innerText = "";
+        tyindc!.innerText = "";
       }, 5000);
     });
 
@@ -282,6 +302,15 @@ function chat() {
       sysid = sysid + 1;
     });
   }, [socket]);
+
+  useEffect(() => {
+    if (user) {
+      socket.emit("typing", {
+        token: user.uid,
+        serverchannel: `${currServer}${currChannel}`,
+      });
+    }
+  }, [message]);
 
   useEffect(() => {
     var listlen = newMsgDataList.length;
@@ -389,20 +418,15 @@ function chat() {
             </div>
             <div className="promotions" style={{ visibility: adsAreVisible }}>
               this is an ad spot but we dont have any monetisation yet so here u
-              go I will advertise server 15
-              <a style={{ color: "aqua" }} onClick={() => joinserver(15)}>
-                {" "}
-                join server 15
+              go I will advertise server 16
+              <a style={{ color: "aqua" }} onClick={() => joinserver(12)}>
+                join server 16 (demo server)
               </a>
             </div>
           </div>
         </div>
 
-        {
-          <div className={"typing-indicator"} ref={typingIndicator}>
-            
-          </div>
-        }
+        {<div className={"typing-indicator"} ref={typingIndicator}></div>}
         {isLoggedIn && (
           <form className="msg-form" onSubmit={sendMessage} autoComplete="off">
             <input
@@ -425,9 +449,22 @@ function chat() {
         <div className="viewer">
           {/* VERY WIP (because of having to make multiple api calls) */}
           {/* I WILL IMPLIMENT A CACHE WHICH GETS UPDATED PER CHANNEL BASED ON MEMBERS */}
-          WIP
-          <br />
-          {usertagdisp}
+          <img
+            className="profilepfp"
+            src={
+              usertagdisp?.pfp
+                ? usertagdisp?.pfp
+                : "http://placekitten.com/g/200/200"
+            }
+            alt="pfp"
+          />
+          <div>
+            <b className="profileuname">{usertagdisp?.uname}</b>
+            <p className="tag">#{usertagdisp?.tag}</p>
+          </div>
+          <p className="status">
+            user is {usertagdisp?.status ? usertagdisp.status : "a bot"}
+          </p>
         </div>
       </div>
     </div>
