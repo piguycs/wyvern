@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import io from "socket.io-client";
+import OutsideAlerter from "../../hooks/outsideAlert";
 
 import "../../styles/app/chat.scss";
 
@@ -37,6 +38,7 @@ function chat() {
 
   // SMORT WAY OF SELECTING DOM ELEMENTS
   const typingIndicator = useRef<HTMLHeadingElement>(null);
+  const msgInpt = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     return () => {
@@ -131,7 +133,8 @@ function chat() {
     name: string | null = null,
     content: string | null = null,
     profilepic: string = "https://placekitten.com/200/200",
-    isFirst: boolean = false
+    isFirst: boolean = false,
+    type: any = null
   ) {
     if (isFirst) {
       return <button key="h_load">LOAD HISTORY (WIP)</button>;
@@ -140,19 +143,23 @@ function chat() {
       // does not have profile pic or username
       return <p className="message-cons">{content}</p>;
     } else {
-      return (
-        <div className="message-div-pfpgrid">
-          <img
-            className="chatpfp pfp-crop"
-            src={profilepic}
-            onClick={() => showProfile(currID)}
-          />
-          <b className="username" onClick={() => showProfile(currID)}>
-            {name}
-          </b>
-          <p className="message">{content}</p>
-        </div>
-      );
+      if (type == "media") {
+        <b className="message-cons">IMAGE: {content}</b>;
+      } else {
+        return (
+          <div className="message-div-pfpgrid">
+            <img
+              className="chatpfp pfp-crop"
+              src={profilepic}
+              onClick={() => showProfile(currID)}
+            />
+            <b className="username" onClick={() => showProfile(currID)}>
+              {name}
+            </b>
+            <p className="message">{content}</p>
+          </div>
+        );
+      }
     }
   }
 
@@ -320,7 +327,8 @@ function chat() {
               newMsgDataList[listlen - 1].username[0],
               newMsgDataList[listlen - 1].content,
               newMsgDataList[listlen - 1].pfp[0][0],
-              false
+              false,
+              newMsgDataList[listlen - 1].type
             )
           }
         </div>,
@@ -335,7 +343,11 @@ function chat() {
   }, [newMessages]);
 
   // Input handeling
-  window.onkeydown = () => document.getElementById("msgInpt")!.focus();
+  window.onkeydown = (e) => {
+    if (!e.ctrlKey && !e.altKey) {
+      msgInpt.current!.focus();
+    }
+  }
   // send message
   function sendMessage(event: any) {
     if (message != "") {
@@ -421,6 +433,7 @@ function chat() {
           <form className="msg-form" onSubmit={sendMessage} autoComplete="off">
             <input
               id="msgInpt"
+              ref={msgInpt}
               className="inputmsg"
               autoFocus={true}
               type="text"
@@ -432,30 +445,32 @@ function chat() {
       </div>
       <div
         id="profile"
-        onClick={() => {
-          document.getElementById("profile")!.style.display = "none";
-        }}
+        // onClick={() => {
+        //   document.getElementById("profile")!.style.display = "none";
+        // }}
       >
-        <div className="viewer">
-          {/* VERY WIP (because of having to make multiple api calls) */}
-          {/* I WILL IMPLIMENT A CACHE WHICH GETS UPDATED PER CHANNEL BASED ON MEMBERS */}
-          <img
-            className="profilepfp"
-            src={
-              usertagdisp?.pfp
-                ? usertagdisp?.pfp
-                : "http://placekitten.com/g/200/200"
-            }
-            alt="pfp"
-          />
-          <div>
-            <b className="profileuname">{usertagdisp?.uname}</b>
-            <p className="tag">#{usertagdisp?.tag}</p>
+        <OutsideAlerter enable={true}>
+          <div className="viewer">
+            {/* VERY WIP (because of having to make multiple api calls) */}
+            {/* I WILL IMPLIMENT A CACHE WHICH GETS UPDATED PER CHANNEL BASED ON MEMBERS */}
+            <img
+              className="profilepfp"
+              src={
+                usertagdisp?.pfp
+                  ? usertagdisp?.pfp
+                  : "http://placekitten.com/g/200/200"
+              }
+              alt="pfp"
+            />
+            <div>
+              <b className="profileuname">{usertagdisp?.uname}</b>
+              <p className="tag">#{usertagdisp?.tag}</p>
+            </div>
+            <p className="status">
+              user is {usertagdisp?.status ? usertagdisp.status : "a bot"}
+            </p>
           </div>
-          <p className="status">
-            user is {usertagdisp?.status ? usertagdisp.status : "a bot"}
-          </p>
-        </div>
+        </OutsideAlerter>
       </div>
     </div>
   );
