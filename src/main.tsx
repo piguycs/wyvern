@@ -9,6 +9,12 @@ import HomePage from "./components/homepage";
 
 import "./styles/main.scss";
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js");
+  });
+}
+
 function Main() {
   return (
     <Router>
